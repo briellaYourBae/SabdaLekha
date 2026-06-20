@@ -189,10 +189,16 @@
             border-top: 1px solid rgba(200, 169, 81, 0.08);
         }
 
-        .logo-img {
-            height: 40px;
-            width: auto;
-            object-fit: contain;
+        .logo-img { height: 120px; width: auto; object-fit: contain; }
+        .logo-hero { max-height: 280px; width: auto; object-fit: contain; margin-bottom: 1.5rem; }
+        .logo-footer { height: 50px; width: auto; object-fit: contain; }
+        .logo-mobile { height: 48px; width: auto; object-fit: contain; }
+
+        @media (max-width: 640px) {
+            .logo-img { height: 110px; }
+            .logo-hero { max-height: 250px; }
+            .logo-mobile { height: 110px; }
+            .logo-footer { height: 38px; }
         }
     </style>
 </head>
@@ -204,9 +210,8 @@
     <!-- ===== NAVBAR ===== -->
     <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
-                <!-- LOGO IMAGE -->
-                <a href="index.html" class="flex items-center space-x-3 group">
+            <div class="flex justify-between items-center h-24">
+                <a href="index.html" class="flex items-center group">
                     <img src="assets/images/logov1.png" alt="EdukasiTunarungu" class="logo-img group-hover:scale-105 transition-transform" />
                 </a>
 
@@ -263,13 +268,13 @@
         </div>
     </nav>
 
-    <!-- ===== MOBILE MENU PREMIUM ===== -->
+    <!-- ===== MOBILE MENU ===== -->
     <div id="mobileMenu" class="mobile-menu">
         <div class="mobile-menu-overlay"></div>
         <div class="mobile-menu-container">
             <div class="mobile-menu-header">
                 <div class="flex items-center gap-3">
-                    <img src="assets/images/logov1.png" alt="EdukasiTunarungu" class="h-10 w-auto object-contain" />
+                    <img src="assets/images/logov1.png" alt="EdukasiTunarungu" class="logo-mobile" />
                 </div>
                 <button id="closeMenuBtn" class="close-btn" aria-label="Close menu">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -279,8 +284,6 @@
             </div>
 
             <div class="mobile-menu-body">
-                <!-- BERANDA DIHAPUS -->
-
                 <a href="#tentang" class="mobile-menu-link">
                     <span class="link-icon">💡</span>
                     <span class="link-text">Tentang</span>
@@ -322,7 +325,8 @@
     <!-- ===== HERO ===== -->
     <section id="hero">
         <div class="text-center max-w-5xl mx-auto px-4 relative z-10">
-            <div class="text-8xl mb-8 animate-float">🤟</div>
+            <img src="assets/images/logov1.png" alt="EdukasiTunarungu" class="logo-hero mx-auto animate-float" />
+            
             <h1 class="text-5xl sm:text-6xl md:text-7xl font-extrabold mb-6">
                 <span class="bg-gradient-to-r from-[#3F3D9C] via-[#C8A951] to-[#3F3D9C] dark:from-[#C8A951] dark:via-[#3F3D9C] dark:to-[#C8A951] bg-clip-text text-transparent bg-300% animate-gradient">
                     Belajar Bahasa Isyarat
@@ -388,7 +392,7 @@
             <div class="grid md:grid-cols-4 gap-12">
                 <div>
                     <div class="flex items-center space-x-3 mb-4">
-                        <img src="assets/images/logov1.png" alt="EdukasiTunarungu" class="h-10 w-auto object-contain" />
+                        <img src="assets/images/logov1.png" alt="EdukasiTunarungu" class="logo-footer" />
                     </div>
                     <p class="text-sm text-[#8A8AA8] dark:text-[#8A7F72] leading-relaxed">Membangun aksesibilitas dan inklusi untuk semua.</p>
                 </div>

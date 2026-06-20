@@ -26,6 +26,21 @@
     <link rel="stylesheet" href="../css/speech-to-text.css" />
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+    <style>
+
+        .logo-img { height: 120px; width: auto; object-fit: contain; }
+        .logo-hero { max-height: 280px; width: auto; object-fit: contain; margin-bottom: 1.5rem; }
+        .logo-footer { height: 50px; width: auto; object-fit: contain; }
+        .logo-mobile { height: 48px; width: auto; object-fit: contain; }
+
+        @media (max-width: 640px) {
+            .logo-img { height: 110px; }
+            .logo-hero { max-height: 250px; }
+            .logo-mobile { height: 110px; }
+            .logo-footer { height: 38px; }
+        }
+    </style>
 </head>
 
 <body class="bg-[#F4F6FA] dark:bg-[#0F172A] text-[#1A1A1A] dark:text-[#EAEAEA]">
@@ -35,12 +50,9 @@
     <!-- ===== NAVBAR ===== -->
     <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
-                <a href="../index.html" class="flex items-center space-x-3 group">
-                    <span class="text-3xl animate-float">🤟</span>
-                    <span class="text-xl font-extrabold bg-gradient-to-r from-[#3F3D9C] to-[#C8A951] dark:from-[#C8A951] dark:to-[#3F3D9C] bg-clip-text text-transparent group-hover:scale-105 transition-transform">
-                        EdukasiTunarungu
-                    </span>
+            <div class="flex justify-between items-center h-24">
+                <a href="../index.html" class="flex items-center group">
+                    <img src="../assets/images/logov1.png" alt="EdukasiTunarungu" class="logo-img group-hover:scale-105 transition-transform" />
                 </a>
 
                 <div class="hidden md:flex items-center space-x-1">
@@ -48,13 +60,13 @@
                         <span class="nav-icon">🏠</span>
                         <span>Beranda</span>
                     </a>
-                    <a href="#tentang" class="nav-link">
+                    <a href="../index.html#tentang" class="nav-link">
                         <span class="nav-icon">💡</span>
                         <span>Tentang</span>
                     </a>
 
                     <div class="dropdown-wrapper">
-                        <button class="nav-link dropdown-trigger gap-2 bg-[#3F3D9C]/10 dark:bg-[#C8A951]/10 rounded-full px-5 py-2.5">
+                        <button class="nav-link dropdown-trigger gap-2 bg-[#3F3D9C]/10 dark:bg-[#C8A951]/10 rounded-2xl px-5 py-2.5">
                             <span class="nav-icon">✨</span>
                             <span>Fitur</span>
                             <svg class="dropdown-arrow w-4 h-4 ml-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -65,17 +77,17 @@
                         <div class="dropdown-menu">
                             <div class="dropdown-inner">
                                 <div class="dropdown-header">✨ Fitur Unggulan</div>
-                                <a href="./pages/kamus-huruf.html" class="dropdown-item">
+                                <a href="kamus-huruf.html" class="dropdown-item">
                                     <span class="dropdown-icon">🔤</span>
                                     <span class="dropdown-label">Kamus Huruf</span>
                                     <span class="dropdown-badge">A-Z</span>
                                 </a>
-                                <a href="./pages/penerjemah.html" class="dropdown-item">
+                                <a href="penerjemah.html" class="dropdown-item">
                                     <span class="dropdown-icon">✍️</span>
                                     <span class="dropdown-label">Penerjemah</span>
                                     <span class="dropdown-badge">Teks → Isyarat</span>
                                 </a>
-                                <a href="./pages/speech-to-text.html" class="dropdown-item">
+                                <a href="speech-to-text.html" class="dropdown-item">
                                     <span class="dropdown-icon">🎤</span>
                                     <span class="dropdown-label">Speech-to-Text</span>
                                     <span class="dropdown-badge">Suara → Teks</span>
@@ -96,14 +108,13 @@
         </div>
     </nav>
 
-    <!-- ===== MOBILE MENU PREMIUM ===== -->
+    <!-- ===== MOBILE MENU ===== -->
     <div id="mobileMenu" class="mobile-menu">
         <div class="mobile-menu-overlay"></div>
         <div class="mobile-menu-container">
             <div class="mobile-menu-header">
                 <div class="flex items-center gap-3">
-                    <span class="text-3xl">🤟</span>
-                    <span class="text-xl font-bold bg-gradient-to-r from-[#3F3D9C] to-[#C8A951] dark:from-[#C8A951] dark:to-[#3F3D9C] bg-clip-text text-transparent">Menu</span>
+                    <img src="../assets/images/logov1.png" alt="EdukasiTunarungu" class="logo-mobile" />
                 </div>
                 <button id="closeMenuBtn" class="close-btn" aria-label="Close menu">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -113,11 +124,7 @@
             </div>
 
             <div class="mobile-menu-body">
-                <a href="../index.html" class="mobile-menu-link">
-                    <span class="link-icon">🏠</span>
-                    <span class="link-text">Beranda</span>
-                </a>
-                <a href="#tentang" class="mobile-menu-link">
+                <a href="../index.html#tentang" class="mobile-menu-link">
                     <span class="link-icon">💡</span>
                     <span class="link-text">Tentang</span>
                 </a>
@@ -125,17 +132,17 @@
                 <div class="mobile-menu-divider"></div>
                 <div class="mobile-menu-label">✨ Fitur Unggulan</div>
 
-                <a href="./pages/kamus-huruf.html" class="mobile-menu-link">
+                <a href="kamus-huruf.html" class="mobile-menu-link">
                     <span class="link-icon">🔤</span>
                     <span class="link-text">Kamus Huruf</span>
                     <span class="link-badge">A-Z</span>
                 </a>
-                <a href="./pages/penerjemah.html" class="mobile-menu-link">
+                <a href="penerjemah.html" class="mobile-menu-link">
                     <span class="link-icon">✍️</span>
                     <span class="link-text">Penerjemah</span>
                     <span class="link-badge">Teks → Isyarat</span>
                 </a>
-                <a href="./pages/speech-to-text.html" class="mobile-menu-link">
+                <a href="speech-to-text.html" class="mobile-menu-link">
                     <span class="link-icon">🎤</span>
                     <span class="link-text">Speech-to-Text</span>
                     <span class="link-badge">Suara → Teks</span>
@@ -145,7 +152,7 @@
 
                 <button id="toggleDarkMobile" class="mobile-menu-link w-full text-left">
                     <span class="link-icon">🌙</span>
-                    <span class="link-text">Dark Mode</span>
+                    <span class="link-text">Light Mode</span>
                 </button>
             </div>
 
@@ -191,8 +198,7 @@
             <div class="grid md:grid-cols-4 gap-12">
                 <div>
                     <div class="flex items-center space-x-3 mb-4">
-                        <span class="text-3xl">🤟</span>
-                        <span class="text-xl font-extrabold bg-gradient-to-r from-[#3F3D9C] to-[#C8A951] dark:from-[#C8A951] dark:to-[#3F3D9C] bg-clip-text text-transparent">EdukasiTunarungu</span>
+                        <img src="../assets/images/logov1.png" alt="EdukasiTunarungu" class="logo-footer" />
                     </div>
                     <p class="text-sm text-[#8A8AA8] dark:text-[#8A7F72] leading-relaxed">Membangun aksesibilitas dan inklusi untuk semua.</p>
                 </div>
@@ -200,9 +206,9 @@
                     <h4 class="font-semibold text-[#1A1A1A] dark:text-[#EAEAEA] mb-4">Menu</h4>
                     <ul class="space-y-2 text-sm text-[#8A8AA8] dark:text-[#8A7F72]">
                         <li><a href="../index.html" class="hover:text-[#3F3D9C] dark:hover:text-[#C8A951] transition">Beranda</a></li>
-                        <li><a href="./pages/kamus-huruf.html" class="hover:text-[#3F3D9C] dark:hover:text-[#C8A951] transition">Kamus Huruf</a></li>
-                        <li><a href="./pages/penerjemah.html" class="hover:text-[#3F3D9C] dark:hover:text-[#C8A951] transition">Penerjemah</a></li>
-                        <li><a href="./pages/speech-to-text.html" class="hover:text-[#3F3D9C] dark:hover:text-[#C8A951] transition">Speech-to-Text</a></li>
+                        <li><a href="kamus-huruf.html" class="hover:text-[#3F3D9C] dark:hover:text-[#C8A951] transition">Kamus Huruf</a></li>
+                        <li><a href="penerjemah.html" class="hover:text-[#3F3D9C] dark:hover:text-[#C8A951] transition">Penerjemah</a></li>
+                        <li><a href="speech-to-text.html" class="hover:text-[#3F3D9C] dark:hover:text-[#C8A951] transition">Speech-to-Text</a></li>
                     </ul>
                 </div>
                 <div>
@@ -216,7 +222,7 @@
                 <div>
                     <h4 class="font-semibold text-[#1A1A1A] dark:text-[#EAEAEA] mb-4">Dukung Kami</h4>
                     <p class="text-sm text-[#8A8AA8] dark:text-[#8A7F72] mb-4">Bantu kami mengembangkan lebih banyak konten edukasi.</p>
-                    <a href="./pages/penerjemah.html" class="px-6 py-2 bg-[#3F3D9C] hover:bg-[#33318A] dark:bg-[#C8A951] dark:hover:bg-[#B89A40] text-white rounded-full text-sm transition inline-block shadow-lg hover:shadow-xl">Coba Sekarang</a>
+                    <a href="penerjemah.html" class="px-6 py-2 bg-[#3F3D9C] hover:bg-[#33318A] dark:bg-[#C8A951] dark:hover:bg-[#B89A40] text-white rounded-full text-sm transition inline-block shadow-lg hover:shadow-xl">Coba Sekarang</a>
                 </div>
             </div>
             <div class="border-t border-[#3F3D9C]/10 dark:border-[#C8A951]/10 mt-12 pt-8 text-center text-sm text-[#8A8AA8] dark:text-[#8A7F72]">

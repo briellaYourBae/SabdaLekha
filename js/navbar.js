@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // ===== BURGER MENU PREMIUM =====
+    // ===== BURGER MENU =====
     const burgerBtn = document.getElementById('burgerBtn');
     const mobileMenu = document.getElementById('mobileMenu');
     const closeBtn = document.getElementById('closeMenuBtn');
@@ -84,14 +84,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 openMenu();
             }
 
-            // Tutup dropdown
             if (dropdownMenu) {
                 dropdownMenu.classList.remove('show');
                 if (dropdownWrapper) dropdownWrapper.classList.remove('open');
             }
         });
 
-        // Close button
         if (closeBtn) {
             closeBtn.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -99,7 +97,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
 
-        // Tutup saat klik overlay
         const overlay = mobileMenu.querySelector('.mobile-menu-overlay');
         if (overlay) {
             overlay.addEventListener('click', function(e) {
@@ -108,14 +105,12 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
 
-        // Tutup saat klik link
         mobileMenu.querySelectorAll('a, button').forEach(item => {
             item.addEventListener('click', function() {
                 closeMenu();
             });
         });
 
-        // Tutup dengan Escape
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 if (mobileMenu.classList.contains('open')) {
@@ -124,7 +119,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Tutup saat resize ke desktop
         window.addEventListener('resize', function() {
             if (window.innerWidth >= 1025) {
                 closeMenu();
