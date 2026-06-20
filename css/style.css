@@ -21,6 +21,12 @@ html {
     scroll-behavior: smooth;
 }
 
+.icon {
+    display: inline-block;
+    vertical-align: -3px;
+    flex-shrink: 0;
+}
+
 ::-webkit-scrollbar {
     width: 8px;
 }
@@ -100,4 +106,4 @@ img {
     .container {
         padding: 0 16px;
     }
-}   
+}

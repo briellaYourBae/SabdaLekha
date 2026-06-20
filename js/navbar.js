@@ -137,10 +137,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const isDark = document.documentElement.classList.contains('dark');
         localStorage.setItem('darkMode', isDark ? 'true' : 'false');
 
-        if (darkToggle) darkToggle.textContent = isDark ? '☀️' : '🌙';
         if (darkToggleMobile) {
             darkToggleMobile.querySelector('.link-text').textContent = isDark ? 'Light Mode' : 'Dark Mode';
-            darkToggleMobile.querySelector('.link-icon').textContent = isDark ? '☀️' : '🌙';
         }
         console.log('🌓 Dark mode:', isDark ? 'ON' : 'OFF');
     }
@@ -148,10 +146,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const saved = localStorage.getItem('darkMode');
     if (saved === 'true' || (saved === null && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
         document.documentElement.classList.add('dark');
-        if (darkToggle) darkToggle.textContent = '☀️';
         if (darkToggleMobile) {
             darkToggleMobile.querySelector('.link-text').textContent = 'Light Mode';
-            darkToggleMobile.querySelector('.link-icon').textContent = '☀️';
         }
     }
 

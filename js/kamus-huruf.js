@@ -62,14 +62,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
             previewImg.onerror = function() {
                 this.src = getPlaceholder(`Huruf ${huruf}`, '3F3D9C', 'ffffff');
-                previewKeterangan.textContent = '⚠️ PNG tidak ditemukan, pakai placeholder';
+                previewKeterangan.innerHTML = '<span class="inline-flex items-center gap-1.5 justify-center"><svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h16.9a2 2 0 0 0 1.7-3L13.6 3.9a2 2 0 0 0-3.4 0Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>PNG tidak ditemukan, pakai placeholder</span></span>';
                 previewKeterangan.className = 'text-sm text-yellow-500 dark:text-yellow-400 mt-2';
                 previewStatus.textContent = 'Gunakan gambar placeholder';
                 previewStatus.className = 'text-xs text-yellow-500 dark:text-yellow-400 mt-1';
             };
 
             previewImg.onload = function() {
-                previewKeterangan.textContent = '✅ Gambar berhasil dimuat';
+                previewKeterangan.innerHTML = '<span class="inline-flex items-center gap-1.5 justify-center"><svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.1V12a10 10 0 1 1-5.9-9.1"/><polyline points="22 4 12 14.01 9 11.01"/></svg><span>Gambar berhasil dimuat</span></span>';
                 previewKeterangan.className = 'text-sm text-green-500 dark:text-green-400 mt-2';
                 previewStatus.textContent = 'Gambar asli dari folder assets';
                 previewStatus.className = 'text-xs text-green-500 dark:text-green-400 mt-1';

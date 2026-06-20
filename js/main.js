@@ -1,7 +1,13 @@
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('✅ Edukasi Tunarungu loaded!');
+    console.log('✅ SabdaLekha loaded!');
 
     createParticles();
+
+    const tahunSekarang = new Date().getFullYear();
+    const tahunFooter = document.getElementById('tahun-footer');
+    const tahunMobile = document.getElementById('tahun-mobile');
+    if (tahunFooter) tahunFooter.textContent = tahunSekarang;
+    if (tahunMobile) tahunMobile.textContent = tahunSekarang;
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -41,4 +47,4 @@ function createParticles() {
         particle.style.animationDelay = (Math.random() * 10) + 's';
         container.appendChild(particle);
     }
-} 
+}

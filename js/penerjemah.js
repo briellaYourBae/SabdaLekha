@@ -122,7 +122,7 @@ function terjemahkan() {
     const teks = input.value.trim();
 
     if (!teks) {
-        hasil.innerHTML = `<div class="w-full text-center text-gray-500 py-8">⚠️ Silakan ketik kata atau kalimat terlebih dahulu</div>`;
+        hasil.innerHTML = `<div class="w-full text-center text-gray-500 py-8 flex items-center justify-center gap-2"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h16.9a2 2 0 0 0 1.7-3L13.6 3.9a2 2 0 0 0-3.4 0Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>Silakan ketik kata atau kalimat terlebih dahulu</span></div>`;
         hasil.classList.remove('has-results');
         return;
     }
@@ -162,7 +162,7 @@ function terjemahkan() {
     });
 
     if (hasil.children.length === 0) {
-        hasil.innerHTML = `<div class="w-full text-center text-gray-500 py-8">⚠️ Tidak ada kata yang valid</div>`;
+        hasil.innerHTML = `<div class="w-full text-center text-gray-500 py-8 flex items-center justify-center gap-2"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h16.9a2 2 0 0 0 1.7-3L13.6 3.9a2 2 0 0 0-3.4 0Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>Tidak ada kata yang valid</span></div>`;
     }
 }
 
