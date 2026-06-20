@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edukasi Tunarungu - Belajar Bahasa Isyarat</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { 50: '#EEF0F8', 100: '#D6D5E8', 200: '#B8B7D4', 300: '#8A89B8', 400: '#6361A8', 500: '#3F3D9C', 600: '#33318A', 700: '#272578', 800: '#1B1966', 900: '#0F0D54' },
+                        secondary: { 400: '#C8A951', 500: '#B89A40', 600: '#A88B30' },
+                        dark: { primary: '#C8A951', secondary: '#3F3D9C', accent: '#C8A951' }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/navbar.css" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+    <style>
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #F4F6FA, #E8EAF0, #DDE0E8);
+            padding-top: 80px;
+        }
+        .dark #hero {
+            background: linear-gradient(135deg, #0F172A, #1A1A2E, #0F172A);
+        }
+
+        .btn-primary {
+            display: inline-block;
+            padding: 16px 40px;
+            background: linear-gradient(135deg, #3F3D9C, #33318A);
+            color: white;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(63, 61, 156, 0.3);
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 40px rgba(63, 61, 156, 0.4);
+        }
+        .dark .btn-primary {
+            background: linear-gradient(135deg, #C8A951, #B89A40);
+            box-shadow: 0 4px 20px rgba(200, 169, 81, 0.3);
+        }
+        .dark .btn-primary:hover {
+            box-shadow: 0 8px 40px rgba(200, 169, 81, 0.4);
+        }
+
+        .btn-secondary {
+            display: inline-block;
+            padding: 16px 40px;
+            background: rgba(63, 61, 156, 0.05);
+            border: 2px solid rgba(63, 61, 156, 0.25);
+            color: #3F3D9C;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            background: rgba(63, 61, 156, 0.1);
+            border-color: #3F3D9C;
+        }
+        .dark .btn-secondary {
+            background: rgba(200, 169, 81, 0.05);
+            border-color: rgba(200, 169, 81, 0.3);
+            color: #C8A951;
+        }
+        .dark .btn-secondary:hover {
+            background: rgba(200, 169, 81, 0.1);
+            border-color: #C8A951;
+        }
+
+        .card-glass {
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(63, 61, 156, 0.06);
+            border-radius: 24px;
+            transition: all 0.4s ease;
+        }
+        .dark .card-glass {
+            background: rgba(26, 26, 46, 0.5);
+            border: 1px solid rgba(200, 169, 81, 0.08);
+        }
+        .card-glass:hover {
+            transform: translateY(-4px);
+            border-color: rgba(63, 61, 156, 0.15);
+            box-shadow: 0 20px 60px rgba(63, 61, 156, 0.04);
+        }
+        .dark .card-glass:hover {
+            border-color: rgba(200, 169, 81, 0.2);
+            box-shadow: 0 20px 60px rgba(200, 169, 81, 0.08);
+        }
+
+        .section-divider {
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #3F3D9C, #C8A951);
+            border-radius: 10px;
+            margin: 0 auto 2rem;
+        }
+        .dark .section-divider {
+            background: linear-gradient(90deg, #C8A951, #3F3D9C);
+        }
+
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .fade-in-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .animate-gradient {
+            background-size: 300% 300%;
+            animation: gradient 4s ease infinite;
+        }
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        #particles-container {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .particle {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            background: radial-gradient(circle, rgba(63, 61, 156, 0.1), transparent);
+            animation: float-particle linear infinite;
+            z-index: 0;
+        }
+        .dark .particle {
+            background: radial-gradient(circle, rgba(200, 169, 81, 0.15), transparent);
+        }
+        @keyframes float-particle {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+
+        footer {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(63, 61, 156, 0.06);
+        }
+        .dark footer {
+            background: rgba(15, 23, 42, 0.95);
+            border-top: 1px solid rgba(200, 169, 81, 0.08);
+        }
+
+        .logo-img {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+        }
+    </style>
+</head>
+
+<body class="bg-[#F4F6FA] dark:bg-[#0F172A] text-[#1A1A1A] dark:text-[#EAEAEA]">
+
+    <div id="particles-container"></div>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- LOGO IMAGE -->
+                <a href="index.html" class="flex items-center space-x-3 group">
+                    <img src="assets/images/logov1.png" alt="EdukasiTunarungu" class="logo-img group-hover:scale-105 transition-transform" />
+                </a>
+
+                <div class="hidden md:flex items-center space-x-1">
+                    <a href="index.html" class="nav-link">
+                        <span class="nav-icon">🏠</span>
+                        <span>Beranda</span>
+                    </a>
+                    <a href="#tentang" class="nav-link">
+                        <span class="nav-icon">💡</span>
+                        <span>Tentang</span>
+                    </a>
+
+                    <div class="dropdown-wrapper">
+                        <button class="nav-link dropdown-trigger gap-2 bg-[#3F3D9C]/10 dark:bg-[#C8A951]/10 rounded-2xl px-5 py-2.5">
+                            <span class="nav-icon">✨</span>
+                            <span>Fitur</span>
+                            <svg class="dropdown-arrow w-4 h-4 ml-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+
+                        <div class="dropdown-menu">
+                            <div class="dropdown-inner">
+                                <div class="dropdown-header">✨ Fitur Unggulan</div>
+                                <a href="pages/kamus-huruf.html" class="dropdown-item">
+                                    <span class="dropdown-icon">🔤</span>
+                                    <span class="dropdown-label">Kamus Huruf</span>
+                                    <span class="dropdown-badge">A-Z</span>
+                                </a>
+                                <a href="pages/penerjemah.html" class="dropdown-item">
+                                    <span class="dropdown-icon">✍️</span>
+                                    <span class="dropdown-label">Penerjemah</span>
+                                    <span class="dropdown-badge">Teks → Isyarat</span>
+                                </a>
+                                <a href="pages/speech-to-text.html" class="dropdown-item">
+                                    <span class="dropdown-icon">🎤</span>
+                                    <span class="dropdown-label">Speech-to-Text</span>
+                                    <span class="dropdown-badge">Suara → Teks</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button id="toggleDark" class="dark-toggle">🌙</button>
+                </div>
+
+                <button id="burgerBtn" class="burger-btn" aria-label="Toggle menu">
+                    <span class="burger-line"></span>
+                    <span class="burger-line"></span>
+                    <span class="burger-line"></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== MOBILE MENU PREMIUM ===== -->
+    <div id="mobileMenu" class="mobile-menu">
+        <div class="mobile-menu-overlay"></div>
+        <div class="mobile-menu-container">
+            <div class="mobile-menu-header">
+                <div class="flex items-center gap-3">
+                    <img src="assets/images/logov1.png" alt="EdukasiTunarungu" class="h-10 w-auto object-contain" />
+                </div>
+                <button id="closeMenuBtn" class="close-btn" aria-label="Close menu">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="mobile-menu-body">
+                <!-- BERANDA DIHAPUS -->
+
+                <a href="#tentang" class="mobile-menu-link">
+                    <span class="link-icon">💡</span>
+                    <span class="link-text">Tentang</span>
+                </a>
+
+                <div class="mobile-menu-divider"></div>
+                <div class="mobile-menu-label">✨ Fitur Unggulan</div>
+
+                <a href="pages/kamus-huruf.html" class="mobile-menu-link">
+                    <span class="link-icon">🔤</span>
+                    <span class="link-text">Kamus Huruf</span>
+                    <span class="link-badge">A-Z</span>
+                </a>
+                <a href="pages/penerjemah.html" class="mobile-menu-link">
+                    <span class="link-icon">✍️</span>
+                    <span class="link-text">Penerjemah</span>
+                    <span class="link-badge">Teks → Isyarat</span>
+                </a>
+                <a href="pages/speech-to-text.html" class="mobile-menu-link">
+                    <span class="link-icon">🎤</span>
+                    <span class="link-text">Speech-to-Text</span>
+                    <span class="link-badge">Suara → Teks</span>
+                </a>
+
+                <div class="mobile-menu-divider"></div>
+
+                <button id="toggleDarkMobile" class="mobile-menu-link w-full text-left">
+                    <span class="link-icon">🌙</span>
+                    <span class="link-text">Light Mode</span>
+                </button>
+            </div>
+
+            <div class="mobile-menu-footer">
+                <p class="text-sm text-[#8A8AA8] dark:text-[#8A7F72]">© 2026 EdukasiTunarungu</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== HERO ===== -->
+    <section id="hero">
+        <div class="text-center max-w-5xl mx-auto px-4 relative z-10">
+            <div class="text-8xl mb-8 animate-float">🤟</div>
+            <h1 class="text-5xl sm:text-6xl md:text-7xl font-extrabold mb-6">
+                <span class="bg-gradient-to-r from-[#3F3D9C] via-[#C8A951] to-[#3F3D9C] dark:from-[#C8A951] dark:via-[#3F3D9C] dark:to-[#C8A951] bg-clip-text text-transparent bg-300% animate-gradient">
+                    Belajar Bahasa Isyarat
+                </span>
+            </h1>
+            <p class="text-xl sm:text-2xl text-[#4A4A6A] dark:text-[#B8B8D0] mb-10 max-w-3xl mx-auto">
+                Edukasi inklusif untuk semua. <br />
+                <span class="text-[#3F3D9C] dark:text-[#C8A951] font-semibold">#AksesibelUntukSemua</span>
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="pages/kamus-huruf.html" class="btn-primary">📖 Mulai Belajar</a>
+                <a href="pages/penerjemah.html" class="btn-secondary">✍️ Coba Penerjemah</a>
+            </div>
+            <div class="mt-12 flex justify-center gap-8 text-sm text-[#8A8AA8] dark:text-[#8A7F72]">
+                <span class="flex items-center gap-2">🎯 <span>100% Gratis</span></span>
+                <span class="flex items-center gap-2">🤟 <span>Bahasa Isyarat</span></span>
+                <span class="flex items-center gap-2">🎤 <span>Speech-to-Text</span></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== TENTANG ===== -->
+    <section id="tentang" class="py-24 px-4 max-w-7xl mx-auto relative">
+        <div class="fade-in-section">
+            <div class="text-center mb-16">
+                <span class="text-sm font-semibold text-[#3F3D9C] dark:text-[#C8A951] uppercase tracking-wider">Tentang Kami</span>
+                <h2 class="text-4xl sm:text-5xl font-extrabold mt-2 mb-4">
+                    <span class="bg-gradient-to-r from-[#3F3D9C] to-[#C8A951] dark:from-[#C8A951] dark:to-[#3F3D9C] bg-clip-text text-transparent">Apa Itu Tunarungu?</span>
+                </h2>
+                <div class="section-divider"></div>
+                <p class="text-[#8A8AA8] dark:text-[#8A7F72] text-lg max-w-2xl mx-auto">Memahami dan mendukung teman-teman tunarungu</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="card-glass p-8 text-center fade-in-section">
+                    <div class="text-5xl mb-4">👂</div>
+                    <h3 class="text-xl font-bold mb-3 text-[#3F3D9C] dark:text-[#C8A951]">Apa Itu Tunarungu?</h3>
+                    <p class="text-[#4A4A6A] dark:text-[#B8B8D0] leading-relaxed">Tunarungu adalah kondisi di mana seseorang mengalami gangguan pendengaran, baik sebagian maupun total.</p>
+                </div>
+                <div class="card-glass p-8 text-center fade-in-section" style="transition-delay: 0.2s;">
+                    <div class="text-5xl mb-4">🤟</div>
+                    <h3 class="text-xl font-bold mb-3 text-[#3F3D9C] dark:text-[#C8A951]">Bahasa Isyarat</h3>
+                    <p class="text-[#4A4A6A] dark:text-[#B8B8D0] leading-relaxed">Bahasa isyarat menggunakan gerakan tangan, ekspresi wajah, dan bahasa tubuh. Di Indonesia ada SIBI dan BISINDO.</p>
+                </div>
+                <div class="card-glass p-8 text-center fade-in-section" style="transition-delay: 0.4s;">
+                    <div class="text-5xl mb-4">💡</div>
+                    <h3 class="text-xl font-bold mb-3 text-[#3F3D9C] dark:text-[#C8A951]">Tips Berkomunikasi</h3>
+                    <p class="text-[#4A4A6A] dark:text-[#B8B8D0] leading-relaxed">Hadapi lawan bicara, gunakan bahasa tubuh, tulis jika perlu, dan pelajari dasar-dasar bahasa isyarat.</p>
+                </div>
+            </div>
+
+            <div class="mt-12 text-center card-glass p-8 max-w-3xl mx-auto fade-in-section">
+                <p class="text-lg text-[#1A1A1A] dark:text-[#EAEAEA]">
+                    🌟 <strong class="text-[#3F3D9C] dark:text-[#C8A951]">Tunarungu BUKAN keterbatasan</strong> — itu hanya cara berbeda dalam melihat dunia.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <div class="max-w-7xl mx-auto px-4 py-16">
+            <div class="grid md:grid-cols-4 gap-12">
+                <div>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <img src="assets/images/logov1.png" alt="EdukasiTunarungu" class="h-10 w-auto object-contain" />
+                    </div>
+                    <p class="text-sm text-[#8A8AA8] dark:text-[#8A7F72] leading-relaxed">Membangun aksesibilitas dan inklusi untuk semua.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-[#1A1A1A] dark:text-[#EAEAEA] mb-4">Menu</h4>
+                    <ul class="space-y-2 text-sm text-[#8A8AA8] dark:text-[#8A7F72]">
+                        <li><a href="index.html" class="hover:text-[#3F3D9C] dark:hover:text-[#C8A951] transition">Beranda</a></li>
+                        <li><a href="pages/kamus-huruf.html" class="hover:text-[#3F3D9C] dark:hover:text-[#C8A951] transition">Kamus Huruf</a></li>
+                        <li><a href="pages/penerjemah.html" class="hover:text-[#3F3D9C] dark:hover:text-[#C8A951] transition">Penerjemah</a></li>
+                        <li><a href="pages/speech-to-text.html" class="hover:text-[#3F3D9C] dark:hover:text-[#C8A951] transition">Speech-to-Text</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-[#1A1A1A] dark:text-[#EAEAEA] mb-4">Kontak</h4>
+                    <ul class="space-y-2 text-sm text-[#8A8AA8] dark:text-[#8A7F72]">
+                        <li>📧 <a href="mailto:email@edukasitunarungu.com" class="hover:text-[#3F3D9C] dark:hover:text-[#C8A951] transition">email@edukasitunarungu.com</a></li>
+                        <li>📞 <a href="tel:+6281234567890" class="hover:text-[#3F3D9C] dark:hover:text-[#C8A951] transition">+62 812-3456-7890</a></li>
+                        <li>📍 Indonesia</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-[#1A1A1A] dark:text-[#EAEAEA] mb-4">Dukung Kami</h4>
+                    <p class="text-sm text-[#8A8AA8] dark:text-[#8A7F72] mb-4">Bantu kami mengembangkan lebih banyak konten edukasi.</p>
+                    <a href="pages/penerjemah.html" class="px-6 py-2 bg-[#3F3D9C] hover:bg-[#33318A] dark:bg-[#C8A951] dark:hover:bg-[#B89A40] text-white rounded-full text-sm transition inline-block shadow-lg hover:shadow-xl">Coba Sekarang</a>
+                </div>
+            </div>
+            <div class="border-t border-[#3F3D9C]/10 dark:border-[#C8A951]/10 mt-12 pt-8 text-center text-sm text-[#8A8AA8] dark:text-[#8A7F72]">
+                <p>© 2026 EdukasiTunarungu. All Rights Reserved.</p>
+                <p class="mt-1">Dibuat dengan ❤️ oleh Tim Aksesibel Indonesia</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/navbar.js"></script>
+</body>
+</html>

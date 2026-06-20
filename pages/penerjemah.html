@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Penerjemah - Edukasi Tunarungu</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { 50: '#EEF0F8', 100: '#D6D5E8', 200: '#B8B7D4', 300: '#8A89B8', 400: '#6361A8', 500: '#3F3D9C', 600: '#33318A', 700: '#272578', 800: '#1B1966', 900: '#0F0D54' },
+                        secondary: { 400: '#C8A951', 500: '#B89A40', 600: '#A88B30' },
+                        dark: { primary: '#C8A951', secondary: '#3F3D9C', accent: '#C8A951' }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/navbar.css" />
+    <link rel="stylesheet" href="../css/penerjemah.css" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+</head>
+
+<body class="bg-[#F4F6FA] dark:bg-[#0F172A] text-[#1A1A1A] dark:text-[#EAEAEA]">
+
+    <div id="particles-container" class="fixed inset-0 pointer-events-none z-0 overflow-hidden"></div>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="../index.html" class="flex items-center space-x-3 group">
+                    <span class="text-3xl animate-float">🤟</span>
+                    <span class="text-xl font-extrabold bg-gradient-to-r from-[#3F3D9C] to-[#C8A951] dark:from-[#C8A951] dark:to-[#3F3D9C] bg-clip-text text-transparent group-hover:scale-105 transition-transform">
+                        EdukasiTunarungu
+                    </span>
+                </a>
+
+                <div class="hidden md:flex items-center space-x-1">
+                    <a href="../index.html" class="nav-link">
+                        <span class="nav-icon">🏠</span>
+                        <span>Beranda</span>
+                    </a>
+                    <a href="#tentang" class="nav-link">
+                        <span class="nav-icon">💡</span>
+                        <span>Tentang</span>
+                    </a>
+
+                    <div class="dropdown-wrapper">
+                        <button class="nav-link dropdown-trigger gap-2 bg-[#3F3D9C]/10 dark:bg-[#C8A951]/10 rounded-full px-5 py-2.5">
+                            <span class="nav-icon">✨</span>
+                            <span>Fitur</span>
+                            <svg class="dropdown-arrow w-4 h-4 ml-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+
+                        <div class="dropdown-menu">
+                            <div class="dropdown-inner">
+                                <div class="dropdown-header">✨ Fitur Unggulan</div>
+                                <a href="./pages/kamus-huruf.html" class="dropdown-item">
+                                    <span class="dropdown-icon">🔤</span>
+                                    <span class="dropdown-label">Kamus Huruf</span>
+                                    <span class="dropdown-badge">A-Z</span>
+                                </a>
+                                <a href="./pages/penerjemah.html" class="dropdown-item">
+                                    <span class="dropdown-icon">✍️</span>
+                                    <span class="dropdown-label">Penerjemah</span>
+                                    <span class="dropdown-badge">Teks → Isyarat</span>
+                                </a>
+                                <a href="./pages/speech-to-text.html" class="dropdown-item">
+                                    <span class="dropdown-icon">🎤</span>
+                                    <span class="dropdown-label">Speech-to-Text</span>
+                                    <span class="dropdown-badge">Suara → Teks</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button id="toggleDark" class="dark-toggle">🌙</button>
+                </div>
+
+                <button id="burgerBtn" class="burger-btn" aria-label="Toggle menu">
+                    <span class="burger-line"></span>
+                    <span class="burger-line"></span>
+                    <span class="burger-line"></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== MOBILE MENU PREMIUM ===== -->
+    <div id="mobileMenu" class="mobile-menu">
+        <div class="mobile-menu-overlay"></div>
+        <div class="mobile-menu-container">
+            <div class="mobile-menu-header">
+                <div class="flex items-center gap-3">
+                    <span class="text-3xl">🤟</span>
+                    <span class="text-xl font-bold bg-gradient-to-r from-[#3F3D9C] to-[#C8A951] dark:from-[#C8A951] dark:to-[#3F3D9C] bg-clip-text text-transparent">Menu</span>
+                </div>
+                <button id="closeMenuBtn" class="close-btn" aria-label="Close menu">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="mobile-menu-body">
+                <a href="../index.html" class="mobile-menu-link">
+                    <span class="link-icon">🏠</span>
+                    <span class="link-text">Beranda</span>
+                </a>
+                <a href="#tentang" class="mobile-menu-link">
+                    <span class="link-icon">💡</span>
+                    <span class="link-text">Tentang</span>
+                </a>
+
+                <div class="mobile-menu-divider"></div>
+                <div class="mobile-menu-label">✨ Fitur Unggulan</div>
+
+                <a href="./pages/kamus-huruf.html" class="mobile-menu-link">
+                    <span class="link-icon">🔤</span>
+                    <span class="link-text">Kamus Huruf</span>
+                    <span class="link-badge">A-Z</span>
+                </a>
+                <a href="./pages/penerjemah.html" class="mobile-menu-link">
+                    <span class="link-icon">✍️</span>
+                    <span class="link-text">Penerjemah</span>
+                    <span class="link-badge">Teks → Isyarat</span>
+                </a>
+                <a href="./pages/speech-to-text.html" class="mobile-menu-link">
+                    <span class="link-icon">🎤</span>
+                    <span class="link-text">Speech-to-Text</span>
+                    <span class="link-badge">Suara → Teks</span>
+                </a>
+
+                <div class="mobile-menu-divider"></div>
+
+                <button id="toggleDarkMobile" class="mobile-menu-link w-full text-left">
+                    <span class="link-icon">🌙</span>
+                    <span class="link-text">Dark Mode</span>
+                </button>
+            </div>
+
+            <div class="mobile-menu-footer">
+                <p class="text-sm text-[#8A8AA8] dark:text-[#8A7F72]">© 2026 EdukasiTunarungu</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== CONTENT ===== -->
+    <section class="min-h-screen pt-32 pb-24 px-4 max-w-7xl mx-auto relative">
+        <div class="fade-in-section">
+            <div class="text-center mb-16">
+                <span class="text-sm font-semibold text-[#3F3D9C] dark:text-[#C8A951] uppercase tracking-wider">Fitur Utama</span>
+                <h1 class="text-4xl sm:text-5xl font-extrabold mt-2 mb-4">
+                    <span class="bg-gradient-to-r from-[#3F3D9C] to-[#C8A951] dark:from-[#C8A951] dark:to-[#3F3D9C] bg-clip-text text-transparent">Ubah Teks Jadi Isyarat</span>
+                </h1>
+                <div class="section-divider"></div>
+                <p class="text-[#8A8AA8] dark:text-[#8A7F72] text-lg">Ketik kata atau kalimat, lihat terjemahan isyaratnya</p>
+            </div>
+
+            <div class="card-glass p-6 md:p-8">
+                <div class="flex flex-col sm:flex-row gap-4 mb-6">
+                    <input type="text" id="input-kata" placeholder="Ketik kata atau kalimat..." class="input-field" />
+                    <button onclick="terjemahkan()" class="btn-primary whitespace-nowrap min-w-[180px]">
+                        🔍 Terjemahkan
+                    </button>
+                </div>
+
+                <div class="flex flex-wrap gap-2 mb-6">
+                    <span class="text-sm text-[#8A8AA8] dark:text-[#8A7F72]">Contoh:</span>
+                    <button onclick="setExample('aku lapar')" class="text-sm px-4 py-2 bg-[#3F3D9C]/10 hover:bg-[#3F3D9C]/20 dark:bg-[#C8A951]/10 dark:hover:bg-[#C8A951]/20 border border-[#3F3D9C]/20 dark:border-[#C8A951]/20 rounded-full transition text-[#3F3D9C] dark:text-[#C8A951] hover:scale-105">aku lapar</button>
+                    <button onclick="setExample('saya suka belajar')" class="text-sm px-4 py-2 bg-[#3F3D9C]/10 hover:bg-[#3F3D9C]/20 dark:bg-[#C8A951]/10 dark:hover:bg-[#C8A951]/20 border border-[#3F3D9C]/20 dark:border-[#C8A951]/20 rounded-full transition text-[#3F3D9C] dark:text-[#C8A951] hover:scale-105">saya suka belajar</button>
+                    <button onclick="setExample('kamu mau makan')" class="text-sm px-4 py-2 bg-[#3F3D9C]/10 hover:bg-[#3F3D9C]/20 dark:bg-[#C8A951]/10 dark:hover:bg-[#C8A951]/20 border border-[#3F3D9C]/20 dark:border-[#C8A951]/20 rounded-full transition text-[#3F3D9C] dark:text-[#C8A951] hover:scale-105">kamu mau makan</button>
+                    <button onclick="setExample('mereka senang')" class="text-sm px-4 py-2 bg-[#3F3D9C]/10 hover:bg-[#3F3D9C]/20 dark:bg-[#C8A951]/10 dark:hover:bg-[#C8A951]/20 border border-[#3F3D9C]/20 dark:border-[#C8A951]/20 rounded-full transition text-[#3F3D9C] dark:text-[#C8A951] hover:scale-105">mereka senang</button>
+                </div>
+
+                <div id="hasil-terjemahan" class="flex flex-wrap gap-4 p-6 min-h-[200px]">
+                    <p class="text-[#8A8AA8] dark:text-[#8A7F72] w-full text-center self-center">✍️ Hasil terjemahan akan muncul di sini</p>
+                </div>
+
+                <div class="mt-4 text-sm text-[#8A8AA8] dark:text-[#8A7F72] text-center">
+                    ⚡ Database kata terus bertambah. Kata yang belum tersedia akan dieja per huruf.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <div class="max-w-7xl mx-auto px-4 py-16">
+            <div class="grid md:grid-cols-4 gap-12">
+                <div>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <span class="text-3xl">🤟</span>
+                        <span class="text-xl font-extrabold bg-gradient-to-r from-[#3F3D9C] to-[#C8A951] dark:from-[#C8A951] dark:to-[#3F3D9C] bg-clip-text text-transparent">EdukasiTunarungu</span>
+                    </div>
+                    <p class="text-sm text-[#8A8AA8] dark:text-[#8A7F72] leading-relaxed">Membangun aksesibilitas dan inklusi untuk semua.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-[#1A1A1A] dark:text-[#EAEAEA] mb-4">Menu</h4>
+                    <ul class="space-y-2 text-sm text-[#8A8AA8] dark:text-[#8A7F72]">
+                        <li><a href="../index.html" class="hover:text-[#3F3D9C] dark:hover:text-[#C8A951] transition">Beranda</a></li>
+                        <li><a href="./pages/kamus-huruf.html" class="hover:text-[#3F3D9C] dark:hover:text-[#C8A951] transition">Kamus Huruf</a></li>
+                        <li><a href="./pages/penerjemah.html" class="hover:text-[#3F3D9C] dark:hover:text-[#C8A951] transition">Penerjemah</a></li>
+                        <li><a href="./pages/speech-to-text.html" class="hover:text-[#3F3D9C] dark:hover:text-[#C8A951] transition">Speech-to-Text</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-[#1A1A1A] dark:text-[#EAEAEA] mb-4">Kontak</h4>
+                    <ul class="space-y-2 text-sm text-[#8A8AA8] dark:text-[#8A7F72]">
+                        <li>📧 <a href="mailto:email@edukasitunarungu.com" class="hover:text-[#3F3D9C] dark:hover:text-[#C8A951] transition">email@edukasitunarungu.com</a></li>
+                        <li>📞 <a href="tel:+6281234567890" class="hover:text-[#3F3D9C] dark:hover:text-[#C8A951] transition">+62 812-3456-7890</a></li>
+                        <li>📍 Indonesia</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-[#1A1A1A] dark:text-[#EAEAEA] mb-4">Dukung Kami</h4>
+                    <p class="text-sm text-[#8A8AA8] dark:text-[#8A7F72] mb-4">Bantu kami mengembangkan lebih banyak konten edukasi.</p>
+                    <a href="./pages/penerjemah.html" class="px-6 py-2 bg-[#3F3D9C] hover:bg-[#33318A] dark:bg-[#C8A951] dark:hover:bg-[#B89A40] text-white rounded-full text-sm transition inline-block shadow-lg hover:shadow-xl">Coba Sekarang</a>
+                </div>
+            </div>
+            <div class="border-t border-[#3F3D9C]/10 dark:border-[#C8A951]/10 mt-12 pt-8 text-center text-sm text-[#8A8AA8] dark:text-[#8A7F72]">
+                <p>© 2026 EdukasiTunarungu. All Rights Reserved.</p>
+                <p class="mt-1">Dibuat dengan ❤️ oleh Tim Aksesibel Indonesia</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/navbar.js"></script>
+    <script src="../js/penerjemah.js"></script>
+</body>
+</html>

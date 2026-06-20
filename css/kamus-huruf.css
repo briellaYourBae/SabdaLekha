@@ -1,0 +1,178 @@
+.kamus-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 30px;
+    align-items: start;
+}
+
+.preview-area {
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(63, 61, 156, 0.06);
+    border-radius: 24px;
+    padding: 30px;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    position: sticky;
+    top: 100px;
+    text-align: center;
+}
+.dark .preview-area {
+    background: rgba(26, 26, 46, 0.5);
+    border: 1px solid rgba(200, 169, 81, 0.08);
+}
+.preview-area.active {
+    border-color: rgba(63, 61, 156, 0.3);
+    box-shadow: 0 0 40px rgba(63, 61, 156, 0.05);
+}
+.dark .preview-area.active {
+    border-color: rgba(200, 169, 81, 0.3);
+    box-shadow: 0 0 40px rgba(200, 169, 81, 0.08);
+}
+
+#gambar-huruf {
+    max-width: 280px;
+    max-height: 280px;
+    width: 100%;
+    height: auto;
+    border-radius: 16px;
+    object-fit: contain;
+    transition: all 0.5s ease;
+}
+
+#nama-huruf {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-top: 16px;
+    color: #1A1A1A;
+}
+.dark #nama-huruf {
+    color: #EAEAEA;
+}
+
+#keterangan-huruf {
+    font-size: 0.9rem;
+    color: #8A8AA8;
+    margin-top: 8px;
+}
+.dark #keterangan-huruf {
+    color: #8A7F72;
+}
+
+#status-huruf {
+    font-size: 0.75rem;
+    margin-top: 12px;
+    color: #8A8AA8;
+}
+.dark #status-huruf {
+    color: #8A7F72;
+}
+
+.huruf-grid {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(6, 1fr);
+}
+
+.huruf-btn {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    font-weight: 800;
+    border-radius: 14px;
+    background: rgba(63, 61, 156, 0.05);
+    border: 2px solid rgba(63, 61, 156, 0.12);
+    color: #3F3D9C;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+.dark .huruf-btn {
+    background: rgba(200, 169, 81, 0.05);
+    border-color: rgba(200, 169, 81, 0.12);
+    color: #C8A951;
+}
+.huruf-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #3F3D9C, #33318A);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.dark .huruf-btn::before {
+    background: linear-gradient(135deg, #C8A951, #B89A40);
+}
+.huruf-btn:hover::before {
+    opacity: 1;
+}
+.huruf-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    border-color: #3F3D9C;
+    box-shadow: 0 8px 25px rgba(63, 61, 156, 0.15);
+}
+.dark .huruf-btn:hover {
+    border-color: #C8A951;
+    box-shadow: 0 8px 25px rgba(200, 169, 81, 0.3);
+}
+.huruf-btn:active {
+    transform: scale(0.95);
+}
+.huruf-btn span {
+    position: relative;
+    z-index: 1;
+    transition: color 0.3s ease;
+}
+.huruf-btn:hover span {
+    color: white;
+}
+
+@media (max-width: 1024px) {
+    .kamus-layout {
+        grid-template-columns: 1fr;
+    }
+    .preview-area {
+        position: relative;
+        top: 0;
+        min-height: 250px;
+        padding: 20px;
+        order: -1;
+    }
+    #gambar-huruf {
+        max-width: 200px;
+        max-height: 200px;
+    }
+    .huruf-grid {
+        grid-template-columns: repeat(6, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .huruf-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+    }
+    .huruf-btn {
+        font-size: 1.2rem;
+        border-radius: 10px;
+    }
+    #gambar-huruf {
+        max-width: 150px;
+        max-height: 150px;
+    }
+    #nama-huruf {
+        font-size: 1.5rem;
+    }
+    .preview-area {
+        min-height: 200px;
+        padding: 16px;
+    }
+}
