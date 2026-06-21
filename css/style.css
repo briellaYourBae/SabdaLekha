@@ -10,6 +10,13 @@ body {
     color: #1A1A1A;
     transition: background-color 0.3s ease, color 0.3s ease;
     overflow-x: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+footer {
+    margin-top: auto;
 }
 
 .dark body {
@@ -19,35 +26,24 @@ body {
 
 html {
     scroll-behavior: smooth;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge legacy */
+}
+html::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge Chromium */
+}
+body {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+body::-webkit-scrollbar {
+    display: none;
 }
 
 .icon {
     display: inline-block;
     vertical-align: -3px;
     flex-shrink: 0;
-}
-
-::-webkit-scrollbar {
-    width: 8px;
-}
-::-webkit-scrollbar-track {
-    background: #E8EAF0;
-}
-.dark ::-webkit-scrollbar-track {
-    background: #1A1A2E;
-}
-::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #3F3D9C, #C8A951);
-    border-radius: 10px;
-}
-.dark ::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #C8A951, #3F3D9C);
-}
-::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, #33318A, #B89A40);
-}
-.dark ::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, #B89A40, #33318A);
 }
 
 ::selection {
