@@ -69,14 +69,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Gambar asli berhasil load
                 previewImg.onload = function() {
                     previewImg.style.opacity = '1';
+                    previewStatus.textContent = "Thanks to AI for generating the image, sorry if it's not perfect!";
+                    previewStatus.className = 'text-xs text-green-500 dark:text-green-400 mt-1';
                 };
                 previewImg.src = path;
             };
 
             testImg.onerror = function() {
-                // Gambar tidak ada, langsung tampilkan huruf saja tanpa placeholder
-                previewImg.style.opacity = '1';
+                // Gambar tidak ada
                 previewImg.classList.add('hidden');
+                previewImg.style.opacity = '1';
                 previewKeterangan.textContent = `Gambar untuk huruf ${huruf} belum tersedia`;
                 previewKeterangan.className = 'text-sm text-[#8A8AA8] dark:text-[#8A7F72] mt-2';
             };
