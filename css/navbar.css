@@ -169,27 +169,7 @@
     color: #C8A951 !important;
 }
 
-.dark-toggle {
-    padding: 10px !important;
-    border-radius: 50% !important;
-    background: rgba(63, 61, 156, 0.06) !important;
-    border: 1px solid rgba(63, 61, 156, 0.08) !important;
-    transition: all 0.3s ease !important;
-    cursor: pointer !important;
-    font-size: 1.2rem !important;
-    width: 44px !important;
-    height: 44px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-}
-.dark-toggle:hover {
-    background: rgba(63, 61, 156, 0.12) !important;
-}
-.dark .dark-toggle {
-    background: rgba(200, 169, 81, 0.08) !important;
-    border-color: rgba(200, 169, 81, 0.12) !important;
-}
+/* dark-toggle diganti full Tailwind di HTML */
 
 .burger-btn {
     display: none !important;
