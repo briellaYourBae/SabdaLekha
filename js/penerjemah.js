@@ -3,32 +3,32 @@ function getPlaceholder(text, bgColor = '3F3D9C', textColor = 'ffffff') {
 }
 
 const kamusHuruf = {
-    'A': '../assets/images/huruf/a.png',
-    'B': '../assets/images/huruf/b.png',
-    'C': '../assets/images/huruf/c.png',
-    'D': '../assets/images/huruf/d.png',
-    'E': '../assets/images/huruf/e.png',
-    'F': '../assets/images/huruf/f.png',
-    'G': '../assets/images/huruf/g.png',
-    'H': '../assets/images/huruf/h.png',
-    'I': '../assets/images/huruf/i.png',
-    'J': '../assets/images/huruf/j.png',
-    'K': '../assets/images/huruf/k.png',
-    'L': '../assets/images/huruf/l.png',
-    'M': '../assets/images/huruf/m.png',
-    'N': '../assets/images/huruf/n.png',
-    'O': '../assets/images/huruf/o.png',
-    'P': '../assets/images/huruf/p.png',
-    'Q': '../assets/images/huruf/q.png',
-    'R': '../assets/images/huruf/r.png',
-    'S': '../assets/images/huruf/s.png',
-    'T': '../assets/images/huruf/t.png',
-    'U': '../assets/images/huruf/u.png',
-    'V': '../assets/images/huruf/v.png',
-    'W': '../assets/images/huruf/w.png',
-    'X': '../assets/images/huruf/x.png',
-    'Y': '../assets/images/huruf/y.png',
-    'Z': '../assets/images/huruf/z.png'
+    'A': '../assets/images/huruf/A.png',
+    'B': '../assets/images/huruf/B.png',
+    'C': '../assets/images/huruf/C.jpg',
+    'D': '../assets/images/huruf/D.png',
+    'E': '../assets/images/huruf/E.png',
+    'F': '../assets/images/huruf/F.png',
+    'G': '../assets/images/huruf/G.png',
+    'H': '../assets/images/huruf/H.png',
+    'I': '../assets/images/huruf/I.png',
+    'J': '../assets/images/huruf/J.png',
+    'K': '../assets/images/huruf/K.png',
+    'L': '../assets/images/huruf/L.png',
+    'M': '../assets/images/huruf/M.png',
+    'N': '../assets/images/huruf/N.png',
+    'O': '../assets/images/huruf/O.png',
+    'P': '../assets/images/huruf/P.png',
+    'Q': '../assets/images/huruf/Q.png',
+    'R': '../assets/images/huruf/R.png',
+    'S': '../assets/images/huruf/S.png',
+    'T': '../assets/images/huruf/T.png',
+    'U': '../assets/images/huruf/U.png',
+    'V': '../assets/images/huruf/V.png',
+    'W': '../assets/images/huruf/W.png',
+    'X': '../assets/images/huruf/X.png',
+    'Y': '../assets/images/huruf/Y.png',
+    'Z': '../assets/images/huruf/Z.png'
 };
 
 const kamusKata = {
@@ -127,15 +127,19 @@ function terjemahkan() {
         return;
     }
 
+    // PECAH KALIMAT MENJADI KATA-KATA (URUT DARI KIRI KE KANAN)
     const kataArray = teks.toLowerCase().split(/\s+/);
     hasil.innerHTML = '';
     hasil.classList.add('has-results');
 
+    // LOOPING SETIAP KATA SECARA URUT (forEach menjaga urutan)
     kataArray.forEach(kata => {
         const kataBersih = kata.replace(/[.,!?;:()'"-]/g, '');
         if (kataBersih.length === 0) return;
 
+        // CEK APAKAH KATA ADA DI DATABASE
         if (kamusKata[kataBersih]) {
+            // TAMPILKAN GAMBAR KATA
             const wrapper = document.createElement('div');
             wrapper.className = 'flex flex-col items-center transition-all duration-300 hover:scale-105';
 
@@ -144,8 +148,10 @@ function terjemahkan() {
             img.alt = `Bahasa isyarat untuk ${kataBersih}`;
             img.className = 'hasil-img';
             img.loading = 'lazy';
+            
+            // Jika gambar gagal load, tampilkan ejaan
             img.onerror = function() {
-                this.parentElement.remove();
+                wrapper.remove();
                 tampilkanEjaanHuruf(kataBersih, hasil);
             };
 
@@ -157,10 +163,12 @@ function terjemahkan() {
             wrapper.appendChild(label);
             hasil.appendChild(wrapper);
         } else {
+            // TAMPILKAN EJAAN PER HURUF
             tampilkanEjaanHuruf(kataBersih, hasil);
         }
     });
 
+    // Jika tidak ada hasil sama sekali
     if (hasil.children.length === 0) {
         hasil.innerHTML = `<div class="w-full text-center text-gray-500 py-8 flex items-center justify-center gap-2"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h16.9a2 2 0 0 0 1.7-3L13.6 3.9a2 2 0 0 0-3.4 0Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>Tidak ada kata yang valid</span></div>`;
     }

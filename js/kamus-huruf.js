@@ -3,32 +3,32 @@ function getPlaceholder(text, bgColor = '3F3D9C', textColor = 'ffffff') {
 }
 
 const kamusHuruf = {
-    'A': '../assets/images/huruf/a.png',
-    'B': '../assets/images/huruf/b.png',
-    'C': '../assets/images/huruf/c.png',
-    'D': '../assets/images/huruf/d.png',
-    'E': '../assets/images/huruf/e.png',
-    'F': '../assets/images/huruf/f.png',
-    'G': '../assets/images/huruf/g.png',
-    'H': '../assets/images/huruf/h.png',
-    'I': '../assets/images/huruf/i.png',
-    'J': '../assets/images/huruf/j.png',
-    'K': '../assets/images/huruf/k.png',
-    'L': '../assets/images/huruf/l.png',
-    'M': '../assets/images/huruf/m.png',
-    'N': '../assets/images/huruf/n.png',
-    'O': '../assets/images/huruf/o.png',
-    'P': '../assets/images/huruf/p.png',
-    'Q': '../assets/images/huruf/q.png',
-    'R': '../assets/images/huruf/r.png',
-    'S': '../assets/images/huruf/s.png',
-    'T': '../assets/images/huruf/t.png',
-    'U': '../assets/images/huruf/u.png',
-    'V': '../assets/images/huruf/v.png',
-    'W': '../assets/images/huruf/w.png',
-    'X': '../assets/images/huruf/x.png',
-    'Y': '../assets/images/huruf/y.png',
-    'Z': '../assets/images/huruf/z.png'
+    'A': '../assets/images/huruf/A.png',
+    'B': '../assets/images/huruf/B.png',
+    'C': '../assets/images/huruf/C.jpg',
+    'D': '../assets/images/huruf/D.png',
+    'E': '../assets/images/huruf/E.png',
+    'F': '../assets/images/huruf/F.png',
+    'G': '../assets/images/huruf/G.png',
+    'H': '../assets/images/huruf/H.png',
+    'I': '../assets/images/huruf/I.png',
+    'J': '../assets/images/huruf/J.png',
+    'K': '../assets/images/huruf/K.png',
+    'L': '../assets/images/huruf/L.png',
+    'M': '../assets/images/huruf/M.png',
+    'N': '../assets/images/huruf/N.png',
+    'O': '../assets/images/huruf/O.png',
+    'P': '../assets/images/huruf/P.png',
+    'Q': '../assets/images/huruf/Q.png',
+    'R': '../assets/images/huruf/R.png',
+    'S': '../assets/images/huruf/S.png',
+    'T': '../assets/images/huruf/T.png',
+    'U': '../assets/images/huruf/U.png',
+    'V': '../assets/images/huruf/V.png',
+    'W': '../assets/images/huruf/W.png',
+    'X': '../assets/images/huruf/X.png',
+    'Y': '../assets/images/huruf/Y.png',
+    'Z': '../assets/images/huruf/Z.png'
 };
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -69,9 +69,8 @@ document.addEventListener('DOMContentLoaded', function() {
             };
 
             previewImg.onload = function() {
-                previewKeterangan.innerHTML = '<span class="inline-flex items-center gap-1.5 justify-center"><svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.1V12a10 10 0 1 1-5.9-9.1"/><polyline points="22 4 12 14.01 9 11.01"/></svg><span>Gambar berhasil dimuat</span></span>';
-                previewKeterangan.className = 'text-sm text-green-500 dark:text-green-400 mt-2';
-                previewStatus.textContent = 'Gambar asli dari folder assets';
+                 previewKeterangan.className = 'text-sm text-green-500 dark:text-green-400 mt-2';
+                previewStatus.textContent = 'Thanks to AI for generating the image, sorry if it\'s not perfect!';
                 previewStatus.className = 'text-xs text-green-500 dark:text-green-400 mt-1';
             };
 
