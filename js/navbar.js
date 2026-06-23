@@ -1,55 +1,89 @@
+// ==========================================
+// NAVBAR PREMIUM - SCROLL EFFECT
+// ==========================================
+
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🔥 Navbar loaded!');
+    console.log('🔥 Navbar Premium loaded!');
+
+    const navbar = document.getElementById('navbar');
+
+    // ===== SCROLL EFFECT =====
+    let lastScrollY = 0;
+    let ticking = false;
+
+    function handleScroll() {
+        const currentScrollY = window.scrollY;
+
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                if (currentScrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+                lastScrollY = currentScrollY;
+                ticking = false;
+            });
+            ticking = true;
+        }
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
 
     // ===== DROPDOWN =====
-    const dropdownWrapper = document.querySelector('.dropdown-wrapper');
-    const dropdownTrigger = document.querySelector('.dropdown-trigger');
-    const dropdownMenu = document.querySelector('.dropdown-menu');
+    const dropdownWrappers = document.querySelectorAll('.dropdown-wrapper');
 
-    if (dropdownWrapper && dropdownTrigger && dropdownMenu) {
-        dropdownTrigger.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
+    dropdownWrappers.forEach(wrapper => {
+        const trigger = wrapper.querySelector('.dropdown-trigger');
+        const menu = wrapper.querySelector('.dropdown-menu');
 
-            const isOpen = dropdownMenu.classList.contains('show');
+        if (trigger && menu) {
+            trigger.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
 
-            document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
-                if (menu !== dropdownMenu) {
+                const isOpen = menu.classList.contains('show');
+
+                document.querySelectorAll('.dropdown-menu.show').forEach(m => {
+                    if (m !== menu) {
+                        m.classList.remove('show');
+                        m.closest('.dropdown-wrapper')?.classList.remove('open');
+                    }
+                });
+
+                if (isOpen) {
                     menu.classList.remove('show');
-                    menu.closest('.dropdown-wrapper')?.classList.remove('open');
+                    wrapper.classList.remove('open');
+                } else {
+                    menu.classList.add('show');
+                    wrapper.classList.add('open');
                 }
             });
 
-            if (isOpen) {
-                dropdownMenu.classList.remove('show');
-                dropdownWrapper.classList.remove('open');
-            } else {
-                dropdownMenu.classList.add('show');
-                dropdownWrapper.classList.add('open');
-            }
-        });
-
-        document.addEventListener('click', function(e) {
-            if (!dropdownWrapper.contains(e.target)) {
-                dropdownMenu.classList.remove('show');
-                dropdownWrapper.classList.remove('open');
-            }
-        });
-
-        dropdownMenu.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', function() {
-                dropdownMenu.classList.remove('show');
-                dropdownWrapper.classList.remove('open');
+            document.addEventListener('click', function(e) {
+                if (!wrapper.contains(e.target)) {
+                    menu.classList.remove('show');
+                    wrapper.classList.remove('open');
+                }
             });
-        });
 
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                dropdownMenu.classList.remove('show');
-                dropdownWrapper.classList.remove('open');
-            }
-        });
-    }
+            menu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function() {
+                    menu.classList.remove('show');
+                    wrapper.classList.remove('open');
+                });
+            });
+        }
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
+                menu.classList.remove('show');
+                menu.closest('.dropdown-wrapper')?.classList.remove('open');
+            });
+        }
+    });
 
     // ===== BURGER MENU =====
     const burgerBtn = document.getElementById('burgerBtn');
@@ -71,12 +105,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     if (burgerBtn && mobileMenu) {
-        console.log('✅ Burger Premium ditemukan!');
-
         burgerBtn.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
-            console.log('🔄 Burger DIKLIK!');
 
             if (mobileMenu.classList.contains('open')) {
                 closeMenu();
@@ -84,10 +115,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 openMenu();
             }
 
-            if (dropdownMenu) {
-                dropdownMenu.classList.remove('show');
-                if (dropdownWrapper) dropdownWrapper.classList.remove('open');
-            }
+            document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
+                menu.classList.remove('show');
+                menu.closest('.dropdown-wrapper')?.classList.remove('open');
+            });
         });
 
         if (closeBtn) {
@@ -124,49 +155,36 @@ document.addEventListener('DOMContentLoaded', function() {
                 closeMenu();
             }
         });
-    } else {
-        console.error('❌ Burger Premium TIDAK DITEMUKAN!');
     }
 
     // ===== DARK MODE =====
-    const darkToggle = document.getElementById('toggleDark');
-    const darkToggleMobile = document.getElementById('toggleDarkMobile');
+    const darkToggleDesktop = document.getElementById('toggleDark');
+    const darkToggleMobileMenu = document.getElementById('toggleDarkMobileMenu');
 
     function toggleDark() {
         document.documentElement.classList.toggle('dark');
         const isDark = document.documentElement.classList.contains('dark');
         localStorage.setItem('darkMode', isDark ? 'true' : 'false');
 
-        if (darkToggleMobile) {
-            darkToggleMobile.querySelector('.link-text').textContent = isDark ? 'Light Mode' : 'Dark Mode';
+        if (darkToggleMobileMenu) {
+            const textSpan = darkToggleMobileMenu.querySelector('.link-text');
+            if (textSpan) textSpan.textContent = isDark ? 'Light Mode' : 'Dark Mode';
         }
+
         console.log('🌓 Dark mode:', isDark ? 'ON' : 'OFF');
     }
 
     const saved = localStorage.getItem('darkMode');
     if (saved === 'true' || (saved === null && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
         document.documentElement.classList.add('dark');
-        if (darkToggleMobile) {
-            darkToggleMobile.querySelector('.link-text').textContent = 'Light Mode';
+        if (darkToggleMobileMenu) {
+            const textSpan = darkToggleMobileMenu.querySelector('.link-text');
+            if (textSpan) textSpan.textContent = 'Light Mode';
         }
     }
 
-    if (darkToggle) darkToggle.addEventListener('click', toggleDark);
-    if (darkToggleMobile) darkToggleMobile.addEventListener('click', toggleDark);
-
-    // ===== NAVBAR SCROLL =====
-    const navbar = document.getElementById('navbar');
-    if (navbar) {
-        window.addEventListener('scroll', function() {
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
-    }
+    if (darkToggleDesktop) darkToggleDesktop.addEventListener('click', toggleDark);
+    if (darkToggleMobileMenu) darkToggleMobileMenu.addEventListener('click', toggleDark);
 
     console.log('✅ Navbar Premium initialized!');
-    console.log('📱 Lebar layar:', window.innerWidth);
-    console.log('🍔 Burger visible:', window.innerWidth <= 1024);
 });

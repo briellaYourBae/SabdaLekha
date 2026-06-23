@@ -3,13 +3,31 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SabdaLekha - Kamus Huruf</title>
-    <link rel="icon" href="../assets/images/logov2.png" type="image/png">
+    <title>SabdaChat - Real-time Chat</title>
 
-    <link rel="stylesheet" href="../css/output.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { 50: '#EEF0F8', 100: '#D6D5E8', 200: '#B8B7D4', 300: '#8A89B8', 400: '#6361A8', 500: '#3F3D9C', 600: '#33318A', 700: '#272578', 800: '#1B1966', 900: '#0F0D54' },
+                        secondary: { 400: '#C8A951', 500: '#B89A40', 600: '#A88B30' },
+                        dark: { primary: '#C8A951', secondary: '#3F3D9C', accent: '#C8A951' }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
     <link rel="stylesheet" href="../css/style.css" />
     <link rel="stylesheet" href="../css/navbar.css" />
-    <link rel="stylesheet" href="../css/kamus-huruf.css" />
+    <link rel="stylesheet" href="../css/chat.css" />
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
@@ -18,13 +36,71 @@
         .logo-dark { display: none; }
         .dark .logo-light { display: none; }
         .dark .logo-dark { display: block; }
-
         .logo-img { height: 120px; width: auto; object-fit: contain; }
+        .logo-mobile { height: 48px; width: auto; object-fit: contain; }
         .logo-footer { height: 110px; width: auto; object-fit: contain; }
-
         @media (max-width: 640px) {
             .logo-img { height: 110px; }
+            .logo-mobile { height: 110px; }
             .logo-footer { height: 120px; }
+        }
+
+        /* Countdown Badge Style */
+        .countdown-badge {
+            font-size: 0.55rem;
+            padding: 2px 10px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            font-weight: 700;
+            white-space: nowrap;
+            animation: pulse-badge 2s ease-in-out infinite;
+            letter-spacing: 0.5px;
+        }
+        .countdown-badge.ended {
+            background: linear-gradient(135deg, #6b7280, #4b5563);
+            animation: none;
+        }
+        @keyframes pulse-badge {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Voice Wave Animation */
+        .voice-wave {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            height: 40px;
+        }
+        .voice-wave .bar {
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, #C8A951, #3F3D9C);
+            border-radius: 10px;
+            animation: wave 0.8s ease-in-out infinite;
+        }
+        .voice-wave .bar:nth-child(1) { animation-delay: 0.0s; height: 30%; }
+        .voice-wave .bar:nth-child(2) { animation-delay: 0.1s; height: 50%; }
+        .voice-wave .bar:nth-child(3) { animation-delay: 0.2s; height: 80%; }
+        .voice-wave .bar:nth-child(4) { animation-delay: 0.3s; height: 100%; }
+        .voice-wave .bar:nth-child(5) { animation-delay: 0.4s; height: 70%; }
+        .voice-wave .bar:nth-child(6) { animation-delay: 0.5s; height: 40%; }
+        .voice-wave .bar:nth-child(7) { animation-delay: 0.6s; height: 60%; }
+        .voice-wave .bar:nth-child(8) { animation-delay: 0.7s; height: 90%; }
+
+        @keyframes wave {
+            0%, 100% { transform: scaleY(0.4); }
+            50% { transform: scaleY(1); }
+        }
+
+        .recording-pulse {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(200, 169, 81, 0.4); }
+            50% { box-shadow: 0 0 0 20px rgba(200, 169, 81, 0); }
         }
 
         .section-divider {
@@ -47,50 +123,14 @@
             opacity: 1;
             transform: translateY(0);
         }
-
-        footer {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(63, 61, 156, 0.06);
-        }
-        .dark footer {
-            background: rgba(15, 23, 42, 0.95);
-            border-top: 1px solid rgba(200, 169, 81, 0.08);
-        }
-
-        #particles-container {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
-        }
-        .particle {
-            position: fixed;
-            border-radius: 50%;
-            pointer-events: none;
-            background: radial-gradient(circle, rgba(63, 61, 156, 0.1), transparent);
-            animation: float-particle linear infinite;
-            z-index: 0;
-        }
-        .dark .particle {
-            background: radial-gradient(circle, rgba(200, 169, 81, 0.15), transparent);
-        }
-        @keyframes float-particle {
-            0% { transform: translateY(100vh) scale(0); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
-        }
     </style>
 </head>
 
 <body class="bg-[#F4F6FA] dark:bg-[#0F172A] text-[#1A1A1A] dark:text-[#EAEAEA]">
 
-    <div id="particles-container"></div>
+    <div id="particles-container" class="fixed inset-0 pointer-events-none z-0 overflow-hidden"></div>
 
-    <!-- ===== NAVBAR ===== -->
+ <!-- ===== NAVBAR ===== -->
     <nav id="navbar">
         <div class="navbar-inner">
             <a href="../index.html" class="navbar-logo group">
@@ -120,7 +160,7 @@
                     <div class="dropdown-menu">
                         <div class="dropdown-inner">
                             <div class="dropdown-header">Fitur Unggulan</div>
-                            <a href="kamus-huruf.html" class="dropdown-item" style="color:#3F3D9C;">
+                            <a href="kamus-huruf.html" class="dropdown-item">
                                 <span class="dropdown-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg></span>
                                 <span class="dropdown-label">Kamus Huruf</span>
                                 <span class="dropdown-badge">A-Z</span>
@@ -130,7 +170,7 @@
                                 <span class="dropdown-label">Penerjemah</span>
                                 <span class="dropdown-badge">Teks → Isyarat</span>
                             </a>
-                            <a href="speech-to-text.html" class="dropdown-item">
+                            <a href="speech-to-text.html" class="dropdown-item" style="color:#3F3D9C;">
                                 <span class="dropdown-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></span>
                                 <span class="dropdown-label">Speech-to-Text</span>
                                 <span class="dropdown-badge">Suara → Teks</span>
@@ -194,7 +234,7 @@
                 <div class="mobile-menu-divider"></div>
                 <div class="mobile-menu-label">Fitur Unggulan</div>
 
-                <a href="kamus-huruf.html" class="mobile-menu-link" style="color:#3F3D9C;">
+                <a href="kamus-huruf.html" class="mobile-menu-link">
                     <span class="link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg></span>
                     <span class="link-text">Kamus Huruf</span>
                     <span class="link-badge">A-Z</span>
@@ -204,7 +244,7 @@
                     <span class="link-text">Penerjemah</span>
                     <span class="link-badge">Teks → Isyarat</span>
                 </a>
-                <a href="speech-to-text.html" class="mobile-menu-link">
+                <a href="speech-to-text.html" class="mobile-menu-link" style="color:#3F3D9C;">
                     <span class="link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></span>
                     <span class="link-text">Speech-to-Text</span>
                     <span class="link-badge">Suara → Teks</span>
@@ -236,31 +276,118 @@
         </div>
     </div>
 
-    <!-- ===== CONTENT ===== -->
-    <section class="min-h-screen pt-32 pb-24 px-4 relative">
-        <div class="max-w-7xl mx-auto">
-            <div class="fade-in-section">
-                <div class="text-center mb-12">
-                    <span class="text-sm font-semibold text-[#3F3D9C] dark:text-[#C8A951] uppercase tracking-wider">Belajar Dasar</span>
-                    <h1 class="text-4xl sm:text-5xl font-extrabold mt-2 mb-4">
-                        <span class="bg-gradient-to-r from-[#3F3D9C] to-[#C8A951] dark:from-[#C8A951] dark:to-[#3F3D9C] bg-clip-text text-transparent">Kamus Huruf A-Z</span>
-                    </h1>
-                    <div class="section-divider"></div>
-                    <p class="text-[#8A8AA8] dark:text-[#8A7F72] text-lg">Klik huruf di sebelah kiri untuk melihat isyaratnya</p>
-                </div>
+    <!-- ===== CONTENT CHAT ===== -->
+    <main class="pt-32 pb-24 px-4 max-w-7xl mx-auto relative min-h-screen">
+        <div class="fade-in-section">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl sm:text-5xl font-extrabold mt-2 mb-4">
+                    <span class="bg-gradient-to-r from-[#3F3D9C] to-[#C8A951] dark:from-[#C8A951] dark:to-[#3F3D9C] bg-clip-text text-transparent">Real-time Chat</span>
+                </h1>
+                <div class="section-divider"></div>
+                <p class="text-[#8A8AA8] dark:text-[#8A7F72] text-lg">Chat publik atau buat ruang privat dengan kode unik</p>
+            </div>
 
-                <div class="kamus-layout">
-                    <div id="huruf-container" class="huruf-grid"></div>
-                    <div id="preview-area" class="preview-area">
-                        <img id="gambar-huruf" src="" alt="Klik huruf" class="hidden" />
-                        <p id="nama-huruf" class="text-2xl font-bold text-[#8A8AA8] dark:text-[#8A7F72]"><svg class="icon" width="36" height="36" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3Z"/></svg></p>
-                        <p id="keterangan-huruf" class="text-sm text-[#8A8AA8] dark:text-[#8A7F72] mt-2">Klik huruf di samping untuk melihat</p>
-                        <p id="status-huruf" class="text-xs mt-4 text-[#8A8AA8] dark:text-[#8A7F72]"></p>
-                    </div>
+            <!-- ===== USER INFO ===== -->
+            <div class="flex flex-wrap items-center justify-between gap-4 mb-6 p-4 bg-white/50 dark:bg-[#1A1A2E]/50 rounded-xl border border-[#3F3D9C]/10 dark:border-[#C8A951]/10">
+                <div class="flex items-center gap-3">
+                    <span class="text-sm text-[#8A8AA8] dark:text-[#8A7F72]">👤 Kamu:</span>
+                    <span id="current-username" class="font-semibold text-[#3F3D9C] dark:text-[#C8A951]">memuat..</span>
+                    <button id="refreshUsername" class="text-xs px-3 py-1 bg-[#3F3D9C]/10 hover:bg-[#3F3D9C]/20 dark:bg-[#C8A951]/10 dark:hover:bg-[#C8A951]/20 rounded-full transition">🔄 Ganti</button>
+                </div>
+                <div id="room-info" class="hidden items-center gap-2 text-sm">
+                    <span class="text-[#8A8AA8] dark:text-[#8A7F72]">🔑 Kode Room:</span>
+                    <span id="current-room-code" class="font-mono font-bold text-[#3F3D9C] dark:text-[#C8A951] bg-[#3F3D9C]/10 dark:bg-[#C8A951]/10 px-3 py-1 rounded-lg"></span>
+                    <button id="copyRoomCode" class="text-xs px-2 py-1 bg-[#3F3D9C]/10 hover:bg-[#3F3D9C]/20 dark:bg-[#C8A951]/10 dark:hover:bg-[#C8A951]/20 rounded transition">📋 Copy</button>
+                    <button id="leaveRoom" class="text-xs px-3 py-1 bg-red-500/10 hover:bg-red-500/20 text-red-500 rounded transition">🚪 Keluar Room</button>
                 </div>
             </div>
+
+            <!-- ===== MODE SELECTOR ===== -->
+            <div class="flex flex-wrap gap-3 mb-6">
+                <button id="btnPublic" class="px-6 py-3 bg-[#3F3D9C] hover:bg-[#33318A] dark:bg-[#C8A951] dark:hover:bg-[#B89A40] text-white rounded-full transition shadow-lg hover:shadow-xl flex-1 sm:flex-none">
+                    <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:-3px;margin-right:5px"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>Public Chat
+                </button>
+                <button id="btnCreateRoom" class="px-6 py-3 bg-[#3F3D9C]/10 hover:bg-[#3F3D9C]/20 dark:bg-[#C8A951]/10 dark:hover:bg-[#C8A951]/20 border border-[#3F3D9C]/20 dark:border-[#C8A951]/20 text-[#3F3D9C] dark:text-[#C8A951] rounded-full transition flex-1 sm:flex-none">
+                    <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:-3px;margin-right:5px"><path d="M12 5v14M5 12h14"/></svg>Buat Room
+                </button>
+                <div class="flex flex-1 sm:flex-none gap-2">
+                    <input type="text" id="roomCodeInput" placeholder="Kode Room" class="px-4 py-3 bg-white/50 dark:bg-[#1A1A2E]/50 border border-[#3F3D9C]/20 dark:border-[#C8A951]/20 rounded-xl text-sm focus:outline-none focus:border-[#3F3D9C] dark:focus:border-[#C8A951] w-32" maxlength="6" />
+                    <button id="btnJoinRoom" class="px-4 py-3 bg-[#3F3D9C]/10 hover:bg-[#3F3D9C]/20 dark:bg-[#C8A951]/10 dark:hover:bg-[#C8A951]/20 border border-[#3F3D9C]/20 dark:border-[#C8A951]/20 text-[#3F3D9C] dark:text-[#C8A951] rounded-full transition">
+                        <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:-3px;margin-right:4px"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg>Join
+                    </button>
+                </div>
+            </div>
+
+            <!-- ===== CHAT AREA ===== -->
+            <div id="chat-container" class="bg-white/50 dark:bg-[#1A1A2E]/50 rounded-2xl border border-[#3F3D9C]/10 dark:border-[#C8A951]/10 overflow-hidden flex flex-col h-[500px]">
+                <div id="messages-container" class="flex-1 overflow-y-auto p-4 space-y-2">
+                    <div class="text-center text-[#8A8AA8] dark:text-[#8A7F72] text-sm py-8"><svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:-4px;margin-right:6px"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Belum ada pesan. Mulai chat!</div>
+                </div>
+                
+                <!-- ===== CHAT INPUT WITH VOICE NOTE ===== -->
+                <div class="border-t border-[#3F3D9C]/10 dark:border-[#C8A951]/10 p-4 flex gap-3">
+                    <input type="text" id="messageInput" placeholder="Ketik pesan.." class="flex-1 px-4 py-3 bg-white/50 dark:bg-[#1A1A2E]/50 border border-[#3F3D9C]/20 dark:border-[#C8A951]/20 rounded-xl text-sm focus:outline-none focus:border-[#3F3D9C] dark:focus:border-[#C8A951] transition" />
+                    
+                    <!-- ===== VOICE NOTE BUTTON ===== -->
+                    <button id="voiceBtn" class="px-4 py-3 bg-[#C8A951]/20 hover:bg-[#C8A951]/30 dark:bg-[#C8A951]/20 dark:hover:bg-[#C8A951]/30 rounded-xl transition text-[#C8A951] relative" title="Rekam suara jadi teks">
+                        <svg class="icon w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3Z"/>
+                            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                            <line x1="12" y1="19" x2="12" y2="23"/>
+                            <line x1="8" y1="23" x2="16" y2="23"/>
+                        </svg>
+                    </button>
+
+                    <!-- ===== VOICE RECORDING INDICATOR ===== -->
+                    <div id="voiceIndicator" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-[9999]">
+                        <div class="bg-white dark:bg-[#1A1A2E] rounded-3xl p-8 max-w-md w-full mx-4 text-center shadow-2xl">
+                            <div class="mb-4 recording-pulse flex justify-center text-[#3F3D9C] dark:text-[#C8A951]"><svg class="icon" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></div>
+                            <p class="text-xl font-semibold text-[#1A1A1A] dark:text-[#EAEAEA] mb-2">Merekam suara..</p>
+                            <p class="text-sm text-[#8A8AA8] dark:text-[#8A7F72] mb-4">Bicara sekarang, suara akan diubah menjadi teks</p>
+                            
+                            <!-- Wave Animation -->
+                            <div class="voice-wave mb-4">
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                            </div>
+                            
+                            <div id="recordingTimer" class="text-2xl font-mono text-[#3F3D9C] dark:text-[#C8A951] mb-4">00:00</div>
+                            
+                            <div class="flex justify-center gap-4">
+                                <button id="stopRecordingBtn" class="px-6 py-3 bg-red-500 hover:bg-red-600 text-white rounded-full transition font-semibold">
+                                    <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:-3px;margin-right:5px"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>Berhenti &amp; Kirim
+                                </button>
+                                <button id="cancelRecordingBtn" class="px-6 py-3 bg-gray-300 hover:bg-gray-400 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-full transition font-semibold">
+                                    <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:-3px;margin-right:5px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Batal
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button id="sendMessageBtn" class="px-6 py-3 bg-[#3F3D9C] hover:bg-[#33318A] dark:bg-[#C8A951] dark:hover:bg-[#B89A40] text-white rounded-xl transition shadow-lg hover:shadow-xl flex items-center gap-2">
+                        <svg class="icon w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                        Kirim
+                    </button>
+                </div>
+            </div>
+
+            <div class="mt-4 text-center text-xs text-[#8A8AA8] dark:text-[#8A7F72]">
+                <span class="inline-flex items-center gap-1 mt-1 text-yellow-600 dark:text-yellow-400">
+                    🎤 Klik ikon mikrofon untuk mengubah suara menjadi teks
+                </span>
+                <br>
+                <span class="inline-flex items-center gap-1 mt-1 text-[#8A8AA8] dark:text-[#8A7F72] text-[10px]">
+                    ⏰ Chat otomatis dibersihkan setiap 12 jam
+                </span>
+            </div>
         </div>
-    </section>
+    </main>
 
     <!-- ===== FOOTER ===== -->
     <footer>
@@ -280,15 +407,15 @@
                         <li><a href="kamus-huruf.html" class="hover:text-[#3F3D9C] dark:hover:text-[#C8A951] transition">Kamus Huruf</a></li>
                         <li><a href="penerjemah.html" class="hover:text-[#3F3D9C] dark:hover:text-[#C8A951] transition">Penerjemah</a></li>
                         <li><a href="speech-to-text.html" class="hover:text-[#3F3D9C] dark:hover:text-[#C8A951] transition">Speech-to-Text</a></li>
-                        <li><a href="chat.html" class="hover:text-[#3F3D9C] dark:hover:text-[#C8A951] transition">Obrolan Real-time</a></li>
+                        <li><a href="chat.html" class="hover:text-[#3F3D9C] dark:hover:text-[#C8A951] transition"><svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:-3px;margin-right:5px"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Obrolan Real-time</a></li>
                     </ul>
                 </div>
                 <div>
                     <h4 class="font-semibold text-[#1A1A1A] dark:text-[#EAEAEA] mb-4">Kontak</h4>
                     <ul class="space-y-2 text-sm text-[#8A8AA8] dark:text-[#8A7F72]">
-                        <li class="flex items-center gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 6 9.5 7L22 6"/></svg> <a href="mailto:brielladev@proton.me" class="hover:text-[#3F3D9C] dark:hover:text-[#C8A951] transition">brielladev@proton.me</a></li>
-                        <li class="flex items-center gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg> <a href="tel:+6281234567890" class="hover:text-[#3F3D9C] dark:hover:text-[#C8A951] transition">+62 812-3456-7890</a></li>
-                        <li class="flex items-center gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> Indonesia</li>
+                        <li class="flex items-center gap-2"><svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 6 9.5 7L22 6"/></svg> <a href="mailto: brielladev@proton.me" class="hover:text-[#3F3D9C] dark:hover:text-[#C8A951] transition"> brielladev@proton.me</a></li>
+                        <li class="flex items-center gap-2"><svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg> <a href="tel:+6281234567890" class="hover:text-[#3F3D9C] dark:hover:text-[#C8A951] transition">+62 812-3456-7890</a></li>
+                        <li class="flex items-center gap-2"><svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> Indonesia</li>
                     </ul>
                 </div>
                 <div>
@@ -305,8 +432,11 @@
 
     <script src="../js/main.js"></script>
     <script src="../js/navbar.js"></script>
-    <script src="../js/kamus-huruf.js"></script>
+    <script src="../js/notification.js"></script>
+    <script src="../js/chat.js"></script>
+    <script src="../js/voice.js"></script>
 
+    <!-- ===== COUNTDOWN 30 HARI ===== -->
     <script>
     (function() {
         const COUNTDOWN_DAYS = 30;
@@ -320,6 +450,7 @@
                     return parsed;
                 }
             }
+            // Mulai dari sekarang (jam 12 malam)
             const now = new Date();
             const target = new Date(now);
             target.setHours(0, 0, 0, 0);
@@ -333,7 +464,7 @@
             const now = new Date();
             const diff = target.getTime() - now.getTime();
 
-            const badges = document.querySelectorAll('#countdownBadge, .countdown-badge');
+            const badges = document.querySelectorAll('#countdownBadge, #countdownBadgeMobile');
 
             if (diff <= 0) {
                 badges.forEach(badge => {
@@ -365,9 +496,11 @@
             });
         }
 
+        // Update setiap detik
         updateCountdown();
         setInterval(updateCountdown, 1000);
 
+        // Perbarui target jika halaman dimuat ulang setelah lewat tengah malam
         window.addEventListener('focus', function() {
             const target = getTargetDate();
             const now = new Date();
