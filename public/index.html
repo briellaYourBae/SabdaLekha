@@ -1,89 +1,742 @@
 <!DOCTYPE html>
-<html>
-  <head>
-     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Welcome to Firebase Hosting</title>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SabdaLekha - Menangkap suara, menulis cerita.</title>
+    <link rel="icon" href="assets/images/logov2.png" type="image/png">
 
-    <!-- update the version number as needed -->
-    <script defer src="/__/firebase/12.15.0/firebase-app-compat.js"></script>
-    <!-- include only the Firebase features as you need -->
-    <script defer src="/__/firebase/12.15.0/firebase-auth-compat.js"></script>
-    <script defer src="/__/firebase/12.15.0/firebase-database-compat.js"></script>
-    <script defer src="/__/firebase/12.15.0/firebase-firestore-compat.js"></script>
-    <script defer src="/__/firebase/12.15.0/firebase-functions-compat.js"></script>
-    <script defer src="/__/firebase/12.15.0/firebase-messaging-compat.js"></script>
-    <script defer src="/__/firebase/12.15.0/firebase-storage-compat.js"></script>
-    <script defer src="/__/firebase/12.15.0/firebase-analytics-compat.js"></script>
-    <script defer src="/__/firebase/12.15.0/firebase-remote-config-compat.js"></script>
-    <script defer src="/__/firebase/12.15.0/firebase-performance-compat.js"></script>
-    <!-- 
-      initialize the SDK after all desired features are loaded, set useEmulator to false
-      to avoid connecting the SDK to running emulators.
-    -->
-    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+    <link rel="stylesheet" href="css/output.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/navbar.css" />
 
-    <style media="screen">
-      body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
-      #message { background: white; max-width: 360px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px; }
-      #message h2 { color: #ffa100; font-weight: bold; font-size: 16px; margin: 0 0 8px; }
-      #message h1 { font-size: 22px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
-      #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
-      #message a { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
-      #message, #message a { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
-      #load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
-      @media (max-width: 600px) {
-        body, #message { margin-top: 0; background: white; box-shadow: none; }
-        body { border-top: 16px solid #ffa100; }
-      }
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+    <style>
+        .logo-light { display: block; }
+        .logo-dark { display: none; }
+        .dark .logo-light { display: none; }
+        .dark .logo-dark { display: block; }
+
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #F4F6FA, #E8EAF0, #DDE0E8);
+            padding-top: 100px;
+        }
+        .dark #hero {
+            background: linear-gradient(135deg, #0F172A, #1A1A2E, #0F172A);
+        }
+
+        .btn-primary {
+            display: inline-block;
+            padding: 16px 40px;
+            background: linear-gradient(135deg, #3F3D9C, #33318A);
+            color: white;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(63, 61, 156, 0.3);
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 40px rgba(63, 61, 156, 0.4);
+        }
+        .dark .btn-primary {
+            background: linear-gradient(135deg, #C8A951, #B89A40);
+            box-shadow: 0 4px 20px rgba(200, 169, 81, 0.3);
+        }
+        .dark .btn-primary:hover {
+            box-shadow: 0 8px 40px rgba(200, 169, 81, 0.4);
+        }
+
+        .btn-secondary {
+            display: inline-block;
+            padding: 16px 40px;
+            background: rgba(63, 61, 156, 0.05);
+            border: 2px solid rgba(63, 61, 156, 0.25);
+            color: #3F3D9C;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            background: rgba(63, 61, 156, 0.1);
+            border-color: #3F3D9C;
+        }
+        .dark .btn-secondary {
+            background: rgba(200, 169, 81, 0.05);
+            border-color: rgba(200, 169, 81, 0.3);
+            color: #C8A951;
+        }
+        .dark .btn-secondary:hover {
+            background: rgba(200, 169, 81, 0.1);
+            border-color: #C8A951;
+        }
+
+        .card-glass {
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(63, 61, 156, 0.06);
+            border-radius: 24px;
+            transition: all 0.4s ease;
+        }
+        .dark .card-glass {
+            background: rgba(26, 26, 46, 0.5);
+            border: 1px solid rgba(200, 169, 81, 0.08);
+        }
+        .card-glass:hover {
+            transform: translateY(-4px);
+            border-color: rgba(63, 61, 156, 0.15);
+            box-shadow: 0 20px 60px rgba(63, 61, 156, 0.04);
+        }
+        .dark .card-glass:hover {
+            border-color: rgba(200, 169, 81, 0.2);
+            box-shadow: 0 20px 60px rgba(200, 169, 81, 0.08);
+        }
+
+        .section-divider {
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #3F3D9C, #C8A951);
+            border-radius: 10px;
+            margin: 0 auto 2rem;
+        }
+        .dark .section-divider {
+            background: linear-gradient(90deg, #C8A951, #3F3D9C);
+        }
+
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .fade-in-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .animate-gradient {
+            background-size: 300% 300%;
+            animation: gradient 4s ease infinite;
+        }
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        #particles-container {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .particle {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            background: radial-gradient(circle, rgba(63, 61, 156, 0.1), transparent);
+            animation: float-particle linear infinite;
+            z-index: 0;
+        }
+        .dark .particle {
+            background: radial-gradient(circle, rgba(200, 169, 81, 0.15), transparent);
+        }
+        @keyframes float-particle {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+
+        footer {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(63, 61, 156, 0.06);
+        }
+        .dark footer {
+            background: rgba(15, 23, 42, 0.95);
+            border-top: 1px solid rgba(200, 169, 81, 0.08);
+        }
+
+        .logo-img { height: 120px; width: auto; object-fit: contain; }
+        .logo-hero { max-height: 280px; width: auto; object-fit: contain; margin-bottom: 1.5rem; }
+        .logo-footer { height: 110px; width: auto; object-fit: contain; }
+
+        @media (max-width: 640px) {
+            .logo-img { height: 110px; }
+            .logo-hero { max-height: 250px; }
+            .logo-footer { height: 120px; }
+        }
     </style>
-  </head>
-  <body>
-    <div id="message">
-      <h2>Welcome</h2>
-      <h1>Firebase Hosting Setup Complete</h1>
-      <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
-      <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a>
+</head>
+
+<body class="bg-[#F4F6FA] dark:bg-[#0F172A] text-[#1A1A1A] dark:text-[#EAEAEA]">
+
+    <div id="particles-container"></div>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav id="navbar">
+        <div class="navbar-inner">
+            <a href="index.html" class="navbar-logo group">
+                <img src="assets/images/logov1.png" alt="SabdaLekha" class="logo-light" />
+                <img src="assets/images/logov2.png" alt="SabdaLekha" class="logo-dark" />
+            </a>
+
+            <div class="nav-links-desktop">
+                <a href="index.html" class="nav-link active">
+                    <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V9.5"/></svg></span>
+                    <span>Beranda</span>
+                </a>
+                <a href="#tentang" class="nav-link">
+                    <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.5.4.8 1 .9 1.6l.2 1.7h6l.2-1.7c.1-.6.4-1.2.9-1.6A7 7 0 0 0 12 2Z"/></svg></span>
+                    <span>Tentang</span>
+                </a>
+
+                <div class="dropdown-wrapper">
+                    <button class="nav-link dropdown-trigger">
+                        <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.6 4.4L18 9l-4.4 1.6L12 15l-1.6-4.4L6 9l4.4-1.6L12 3Z"/><path d="M19 14l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7.7-2Z"/></svg></span>
+                        <span>Fitur</span>
+                        <svg class="dropdown-arrow" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+
+                    <div class="dropdown-menu">
+                        <div class="dropdown-inner">
+                            <div class="dropdown-header">Fitur Unggulan</div>
+                            <a href="pages/kamus-huruf.html" class="dropdown-item">
+                                <span class="dropdown-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg></span>
+                                <span class="dropdown-label">Kamus Huruf</span>
+                                <span class="dropdown-badge">A-Z</span>
+                            </a>
+                            <a href="pages/penerjemah.html" class="dropdown-item">
+                                <span class="dropdown-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5Z"/></svg></span>
+                                <span class="dropdown-label">Penerjemah</span>
+                                <span class="dropdown-badge">Teks → Isyarat</span>
+                            </a>
+                            <a href="pages/speech-to-text.html" class="dropdown-item">
+                                <span class="dropdown-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></span>
+                                <span class="dropdown-label">Speech-to-Text</span>
+                                <span class="dropdown-badge">Suara → Teks</span>
+                            </a>
+                            <a href="pages/chat.html" class="dropdown-item" style="color:#3F3D9C;">
+                                <span class="dropdown-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+                                <span class="dropdown-label">Obrolan Real-time</span>
+                                <span id="countdownBadge" class="dropdown-badge countdown-badge">30 hari</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <button id="toggleDark" class="dark-toggle" aria-label="Toggle dark mode">
+                    <span class="toggle-label" style="font-size:0.75rem;font-weight:500;color:#4A4A6A;">
+                        <span class="dark:hidden">🌙</span>
+                        <span class="hidden dark:inline">☀️</span>
+                    </span>
+                    <span class="toggle-track">
+                        <span class="toggle-thumb"></span>
+                    </span>
+                </button>
+            </div>
+
+            <div class="nav-links-mobile"></div>
+
+            <button id="burgerBtn" class="burger-btn" aria-label="Toggle menu">
+                <span class="burger-line"></span>
+                <span class="burger-line"></span>
+                <span class="burger-line"></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ===== MOBILE MENU ===== -->
+    <div id="mobileMenu" class="mobile-menu">
+        <div class="mobile-menu-overlay"></div>
+        <div class="mobile-menu-container">
+            <div class="mobile-menu-header">
+                <a href="index.html" class="flex items-center gap-3">
+                    <img src="assets/images/logov1.png" alt="SabdaLekha" class="logo-light" style="height:56px;width:auto;object-fit:contain;" />
+                    <img src="assets/images/logov2.png" alt="SabdaLekha" class="logo-dark" style="height:56px;width:auto;object-fit:contain;" />
+                </a>
+                <button id="closeMenuBtn" class="close-btn" aria-label="Close menu">
+                    <svg width="28" height="28" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="mobile-menu-body">
+                <a href="index.html" class="mobile-menu-link active">
+                    <span class="link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V9.5"/></svg></span>
+                    <span class="link-text">Beranda</span>
+                </a>
+                <a href="#tentang" class="mobile-menu-link">
+                    <span class="link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.5.4.8 1 .9 1.6l.2 1.7h6l.2-1.7c.1-.6.4-1.2.9-1.6A7 7 0 0 0 12 2Z"/></svg></span>
+                    <span class="link-text">Tentang</span>
+                </a>
+
+                <div class="mobile-menu-divider"></div>
+                <div class="mobile-menu-label">Fitur Unggulan</div>
+
+                <a href="pages/kamus-huruf.html" class="mobile-menu-link">
+                    <span class="link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg></span>
+                    <span class="link-text">Kamus Huruf</span>
+                    <span class="link-badge">A-Z</span>
+                </a>
+                <a href="pages/penerjemah.html" class="mobile-menu-link">
+                    <span class="link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5Z"/></svg></span>
+                    <span class="link-text">Penerjemah</span>
+                    <span class="link-badge">Teks → Isyarat</span>
+                </a>
+                <a href="pages/speech-to-text.html" class="mobile-menu-link">
+                    <span class="link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></span>
+                    <span class="link-text">Speech-to-Text</span>
+                    <span class="link-badge">Suara → Teks</span>
+                </a>
+                <a href="pages/chat.html" class="mobile-menu-link" style="color:#3F3D9C;">
+                    <span class="link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+                    <span class="link-text">Obrolan Real-time</span>
+                    <span class="link-badge countdown-badge">30 hari</span>
+                </a>
+
+                <div class="mobile-menu-divider"></div>
+
+                <button id="toggleDarkMobileMenu" class="mobile-menu-link w-full text-left">
+                    <span class="link-icon">
+                        <svg class="dark:hidden" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+                        <svg class="hidden dark:inline" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+                    </span>
+                    <span class="link-text dark:hidden">Dark Mode</span>
+                    <span class="link-text hidden dark:inline">Light Mode</span>
+                    <span class="ml-auto relative w-10 h-5 rounded-full bg-[#3F3D9C]/20 dark:bg-[#C8A951]/30 transition-colors duration-300">
+                        <span class="absolute top-0.5 left-0.5 dark:left-[calc(100%-1.125rem)] w-4 h-4 rounded-full bg-[#3F3D9C] dark:bg-[#C8A951] shadow transition-all duration-300"></span>
+                    </span>
+                </button>
+            </div>
+
+            <div class="mobile-menu-footer">
+                <p class="text-sm text-[#8A8AA8] dark:text-[#8A7F72]">© 2026 SabdaLekha</p>
+            </div>
+        </div>
     </div>
-    <p id="load">Firebase SDK Loading&hellip;</p>
+
+    <!-- ===== HERO ===== -->
+    <section id="hero">
+        <div class="text-center max-w-5xl mx-auto px-4 relative z-10">
+            <img src="assets/images/logov1.png" alt="SabdaLekha" class="logo-hero mx-auto animate-float logo-light" />
+            <img src="assets/images/logov2.png" alt="SabdaLekha" class="logo-hero mx-auto animate-float logo-dark" />
+            
+            <h1 class="text-5xl sm:text-6xl md:text-7xl font-extrabold mb-6">
+                <span class="bg-gradient-to-r from-[#3F3D9C] via-[#C8A951] to-[#3F3D9C] dark:from-[#C8A951] dark:via-[#3F3D9C] dark:to-[#C8A951] bg-clip-text text-transparent bg-300% animate-gradient">
+                    Belajar Bahasa Isyarat
+                </span>
+            </h1>
+            <p class="text-xl sm:text-2xl text-[#4A4A6A] dark:text-[#B8B8D0] mb-10 max-w-3xl mx-auto">
+                Edukasi inklusif untuk semua. <br />
+                <span class="text-[#3F3D9C] dark:text-[#C8A951] font-semibold">Menangkap suara, menulis cerita.</span>
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="pages/kamus-huruf.html" class="btn-primary"><svg class="inline-block mr-2" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2Z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7Z"/></svg> Mulai Belajar</a>
+                <a href="pages/penerjemah.html" class="btn-secondary"><svg class="inline-block mr-2" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5Z"/></svg> Coba Penerjemah</a>
+                <a href="pages/chat.html" class="btn-secondary"><svg class="inline-block mr-2" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Obrolan Real-time</a>
+            </div>
+            <div class="mt-12 flex justify-center gap-8 text-sm text-[#8A8AA8] dark:text-[#8A7F72]">
+                <span class="flex items-center gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/></svg> <span>100% Gratis</span></span>
+                <span class="flex items-center gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 12.5V7a2 2 0 0 0-4 0v4.5"/><path d="M14 11V5a2 2 0 0 0-4 0v6.5"/><path d="M10 11.5V7a2 2 0 0 0-4 0v8"/><path d="M6 15v-1.5a2 2 0 0 0-4 0v2.5a8.5 8.5 0 0 0 8.5 8.5H12a7.5 7.5 0 0 0 7.5-7.5V12a2 2 0 0 0-4 0"/></svg> <span>Bahasa Isyarat</span></span>
+                <span class="flex items-center gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg> <span>Speech-to-Text</span></span>
+            </div>
+        </div>
+    </section>
+
+ <!-- ===== TENTANG ===== -->
+    <section id="tentang" class="py-24 px-4 max-w-7xl mx-auto relative">
+        <div class="fade-in-section">
+            <div class="text-center mb-16">
+                <span class="text-sm font-semibold text-[#3F3D9C] dark:text-[#C8A951] uppercase tracking-wider">Tentang Kami</span>
+                <h2 class="text-4xl sm:text-5xl font-extrabold mt-2 mb-4">
+                    <span class="bg-gradient-to-r from-[#3F3D9C] to-[#C8A951] dark:from-[#C8A951] dark:to-[#3F3D9C] bg-clip-text text-transparent">Apa Itu Tunarungu?</span>
+                </h2>
+                <div class="section-divider"></div>
+                <p class="text-[#8A8AA8] dark:text-[#8A7F72] text-lg max-w-2xl mx-auto">Memahami dan mendukung teman-teman tunarungu</p>
+            </div>
+
+            <!-- 3 Cards Utama -->
+            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                <div class="card-glass p-8 text-center fade-in-section">
+                    <div class="mb-4 flex justify-center text-[#3F3D9C] dark:text-[#C8A951]"><svg class="icon" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 13.5a4 4 0 1 1 7.7-2c.3 2-1.2 2.7-1.2 4.7a2.2 2.2 0 1 1-4.4 0"/><path d="M8.5 13.5C7 11.8 6.5 9.5 7.5 7.2A6 6 0 0 1 18 9.5c0 2.2-1.1 3.3-2.3 4.3"/></svg></div>
+                    <h3 class="text-xl font-bold mb-3 text-[#3F3D9C] dark:text-[#C8A951]">Apa Itu Tunarungu?</h3>
+                    <p class="text-[#4A4A6A] dark:text-[#B8B8D0] leading-relaxed">Tunarungu adalah kondisi di mana seseorang mengalami gangguan pendengaran, baik sebagian maupun total. Ini bukan penghalang untuk belajar dan berkarya!</p>
+                </div>
+                <div class="card-glass p-8 text-center fade-in-section" style="transition-delay: 0.2s;">
+                    <div class="mb-4 flex justify-center text-[#3F3D9C] dark:text-[#C8A951]"><svg class="icon" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 12.5V7a2 2 0 0 0-4 0v4.5"/><path d="M14 11V5a2 2 0 0 0-4 0v6.5"/><path d="M10 11.5V7a2 2 0 0 0-4 0v8"/><path d="M6 15v-1.5a2 2 0 0 0-4 0v2.5a8.5 8.5 0 0 0 8.5 8.5H12a7.5 7.5 0 0 0 7.5-7.5V12a2 2 0 0 0-4 0"/></svg></div>
+                    <h3 class="text-xl font-bold mb-3 text-[#3F3D9C] dark:text-[#C8A951]">Bahasa Isyarat</h3>
+                    <p class="text-[#4A4A6A] dark:text-[#B8B8D0] leading-relaxed">Bahasa isyarat menggunakan gerakan tangan, ekspresi wajah, dan bahasa tubuh. Di Indonesia ada SIBI dan BISINDO yang digunakan oleh komunitas Tuli.</p>
+                </div>
+                <div class="card-glass p-8 text-center fade-in-section" style="transition-delay: 0.4s;">
+                    <div class="mb-4 flex justify-center text-[#3F3D9C] dark:text-[#C8A951]"><svg class="icon" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.5.4.8 1 .9 1.6l.2 1.7h6l.2-1.7c.1-.6.4-1.2.9-1.6A7 7 0 0 0 12 2Z"/></svg></div>
+                    <h3 class="text-xl font-bold mb-3 text-[#3F3D9C] dark:text-[#C8A951]">Tips Berkomunikasi</h3>
+                    <p class="text-[#4A4A6A] dark:text-[#B8B8D0] leading-relaxed">Hadapi lawan bicara, gunakan bahasa tubuh, tulis jika perlu, dan pelajari dasar-dasar bahasa isyarat. Kesabaran adalah kunci komunikasi yang baik.</p>
+                </div>
+            </div>
+
+            <!-- ===== KONTEN EDUKASI TAMBAHAN ===== -->
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Fakta tentang Tunarungu -->
+                <div class="card-glass p-8 fade-in-section">
+                    <h3 class="text-xl font-bold mb-4 text-[#3F3D9C] dark:text-[#C8A951] flex items-center gap-2">
+                        <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                        Fakta Penting
+                    </h3>
+                    <ul class="space-y-3 text-[#4A4A6A] dark:text-[#B8B8D0]">
+                        <li class="flex items-start gap-3">
+                            <span class="text-[#C8A951] mt-1"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg></span>
+                            <span><strong class="text-[#1A1A1A] dark:text-[#EAEAEA]">466 juta</strong> orang di dunia memiliki gangguan pendengaran (WHO, 2023)</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-[#C8A951] mt-1"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg></span>
+                            <span><strong class="text-[#1A1A1A] dark:text-[#EAEAEA]">Bahasa isyarat</strong> adalah bahasa alami yang memiliki tata bahasa sendiri</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-[#C8A951] mt-1"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg></span>
+                            <span>Di Indonesia ada <strong class="text-[#1A1A1A] dark:text-[#EAEAEA]">SIBI</strong> (Sistem Isyarat Bahasa Indonesia) dan <strong class="text-[#1A1A1A] dark:text-[#EAEAEA]">BISINDO</strong> (Bahasa Isyarat Indonesia)</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-[#C8A951] mt-1"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg></span>
+                            <span><strong class="text-[#1A1A1A] dark:text-[#EAEAEA]">90%</strong> anak tunarungu lahir dari orang tua yang mendengar</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-[#C8A951] mt-1"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg></span>
+                            <span>Komunikasi dini dengan bahasa isyarat <strong class="text-[#1A1A1A] dark:text-[#EAEAEA]">meningkatkan perkembangan kognitif</strong> anak tunarungu</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Tips Berinteraksi -->
+                <div class="card-glass p-8 fade-in-section">
+                    <h3 class="text-xl font-bold mb-4 text-[#3F3D9C] dark:text-[#C8A951] flex items-center gap-2">
+                        <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5Z"/></svg>
+                        Tips Berinteraksi
+                    </h3>
+                    <ul class="space-y-3 text-[#4A4A6A] dark:text-[#B8B8D0]">
+                        <li class="flex items-start gap-3">
+                            <span class="text-[#3F3D9C] dark:text-[#C8A951] mt-1"><svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z"/><circle cx="12" cy="12" r="3"/></svg></span>
+                            <span><strong class="text-[#1A1A1A] dark:text-[#EAEAEA]">Hadapilah</strong> lawan bicara dan pastikan kontak mata</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-[#3F3D9C] dark:text-[#C8A951] mt-1"><svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></span>
+                            <span>Bicaralah dengan <strong class="text-[#1A1A1A] dark:text-[#EAEAEA]">jelas</strong> dan <strong class="text-[#1A1A1A] dark:text-[#EAEAEA]">wajar</strong>, tidak perlu berteriak</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-[#3F3D9C] dark:text-[#C8A951] mt-1"><svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg></span>
+                            <span>Gunakan <strong class="text-[#1A1A1A] dark:text-[#EAEAEA]">tulisan</strong> jika diperlukan untuk memperjelas</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-[#3F3D9C] dark:text-[#C8A951] mt-1"><svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg></span>
+                            <span>Pelajari <strong class="text-[#1A1A1A] dark:text-[#EAEAEA]">dasar-dasar bahasa isyarat</strong> untuk komunikasi yang lebih baik</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-[#3F3D9C] dark:text-[#C8A951] mt-1"><svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+                            <span><strong class="text-[#1A1A1A] dark:text-[#EAEAEA]">Sabarlah</strong> dan berikan waktu bagi lawan bicara untuk merespons</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- SIBI vs BISINDO -->
+            <div class="mt-8 grid md:grid-cols-2 gap-8">
+                <div class="card-glass p-8 fade-in-section">
+                    <h3 class="text-xl font-bold mb-4 text-[#3F3D9C] dark:text-[#C8A951] flex items-center gap-2">
+                        <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3Z"/></svg>
+                        SIBI (Sistem Isyarat Bahasa Indonesia)
+                    </h3>
+                    <ul class="space-y-2 text-[#4A4A6A] dark:text-[#B8B8D0]">
+                        <li class="flex items-start gap-3">
+                            <span class="text-[#C8A951] mt-1"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span>
+                            <span>Dikembangkan oleh <strong class="text-[#1A1A1A] dark:text-[#EAEAEA]">pemerintah Indonesia</strong></span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-[#C8A951] mt-1"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span>
+                            <span>Mengikuti <strong class="text-[#1A1A1A] dark:text-[#EAEAEA]">struktur tata bahasa Indonesia</strong></span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-[#C8A951] mt-1"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span>
+                            <span>Digunakan di <strong class="text-[#1A1A1A] dark:text-[#EAEAEA]">lingkungan pendidikan formal</strong></span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-[#C8A951] mt-1"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span>
+                            <span>Memiliki <strong class="text-[#1A1A1A] dark:text-[#EAEAEA]">kamus resmi</strong> dari Kemendikbud</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card-glass p-8 fade-in-section">
+                    <h3 class="text-xl font-bold mb-4 text-[#3F3D9C] dark:text-[#C8A951] flex items-center gap-2">
+                        <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3Z"/></svg>
+                        BISINDO (Bahasa Isyarat Indonesia)
+                    </h3>
+                    <ul class="space-y-2 text-[#4A4A6A] dark:text-[#B8B8D0]">
+                        <li class="flex items-start gap-3">
+                            <span class="text-[#C8A951] mt-1"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span>
+                            <span><strong class="text-[#1A1A1A] dark:text-[#EAEAEA]">Alami</strong> dan berkembang di komunitas Tuli</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-[#C8A951] mt-1"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span>
+                            <span>Memiliki <strong class="text-[#1A1A1A] dark:text-[#EAEAEA]">tata bahasa dan struktur sendiri</strong></span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-[#C8A951] mt-1"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span>
+                            <span>Digunakan <strong class="text-[#1A1A1A] dark:text-[#EAEAEA]">sehari-hari</strong> oleh komunitas Tuli Indonesia</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-[#C8A951] mt-1"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span>
+                            <span>Menggunakan <strong class="text-[#1A1A1A] dark:text-[#EAEAEA]">ekspresi wajah</strong> dan <strong class="text-[#1A1A1A] dark:text-[#EAEAEA]">bahasa tubuh</strong> yang kaya</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Mitos & Fakta -->
+            <div class="mt-8 card-glass p-8 fade-in-section">
+                <h3 class="text-xl font-bold mb-6 text-[#3F3D9C] dark:text-[#C8A951] flex items-center gap-2">
+                    <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h16.9a2 2 0 0 0 1.7-3L13.6 3.9a2 2 0 0 0-3.4 0Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    Mitos vs Fakta
+                </h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="font-semibold text-red-500 dark:text-red-400 mb-2 flex items-center gap-2"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg><span>Mitos</span></h4>
+                        <ul class="space-y-2 text-[#4A4A6A] dark:text-[#B8B8D0]">
+                            <li class="flex items-start gap-2"><span class="text-red-400 inline-flex items-center"><svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span> Tunarungu tidak bisa berbicara</li>
+                            <li class="flex items-start gap-2"><span class="text-red-400 inline-flex items-center"><svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span> Bahasa isyarat universal di seluruh dunia</li>
+                            <li class="flex items-start gap-2"><span class="text-red-400 inline-flex items-center"><svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span> Tunarungu berarti tidak bisa belajar</li>
+                            <li class="flex items-start gap-2"><span class="text-red-400 inline-flex items-center"><svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span> Alat bantu dengar menyembuhkan tunarungu</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-green-500 dark:text-green-400 mb-2 flex items-center gap-2"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.1V12a10 10 0 1 1-5.9-9.1"/><polyline points="22 4 12 14.01 9 11.01"/></svg><span>Fakta</span></h4>
+                        <ul class="space-y-2 text-[#4A4A6A] dark:text-[#B8B8D0]">
+                            <li class="flex items-start gap-2"><span class="text-green-400 inline-flex items-center"><svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> Banyak tunarungu bisa berbicara dengan latihan</li>
+                            <li class="flex items-start gap-2"><span class="text-green-400 inline-flex items-center"><svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> Setiap negara punya bahasa isyarat sendiri</li>
+                            <li class="flex items-start gap-2"><span class="text-green-400 inline-flex items-center"><svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> Tunarungu bisa berprestasi setara dengan yang lain</li>
+                            <li class="flex items-start gap-2"><span class="text-green-400 inline-flex items-center"><svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> Alat bantu dengar hanya membantu, bukan menyembuhkan</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== PENUTUP - LEBIH MENARIK ===== -->
+            <div class="mt-12 text-center fade-in-section">
+                <!-- Background Decoration -->
+                <div class="relative max-w-4xl mx-auto">
+                    <!-- Efek Glow Background -->
+                    <div class="absolute -inset-1 bg-gradient-to-r from-[#3F3D9C]/20 via-[#C8A951]/20 to-[#3F3D9C]/20 rounded-3xl blur-2xl opacity-50 dark:opacity-30"></div>
+                    
+                    <div class="relative card-glass p-10 md:p-12 overflow-hidden">
+                        <!-- Decorative Elements -->
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-[#3F3D9C]/5 dark:bg-[#C8A951]/5 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2"></div>
+                        <div class="absolute bottom-0 left-0 w-40 h-40 bg-[#C8A951]/5 dark:bg-[#3F3D9C]/5 rounded-full blur-2xl translate-y-1/2 -translate-x-1/2"></div>
+                        
+                        <!-- Divider Decorative -->
+                        <div class="flex items-center justify-center gap-4 mb-6">
+                            <div class="w-12 h-px bg-gradient-to-r from-transparent to-[#C8A951]"></div>
+                            <svg class="icon w-6 h-6 text-[#C8A951]" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2.5l3 6.4 6.9.9-5 4.9 1.2 6.9L12 17.9l-6.1 3.6 1.2-6.9-5-4.9 6.9-.9L12 2.5Z"/></svg>
+                            <div class="w-12 h-px bg-gradient-to-l from-transparent to-[#C8A951]"></div>
+                        </div>
+
+                        <!-- Main Quote -->
+                        <p class="text-2xl sm:text-3xl md:text-4xl font-bold text-[#1A1A1A] dark:text-[#EAEAEA] leading-relaxed">
+                            "Tunarungu <span class="text-[#3F3D9C] dark:text-[#C8A951]">BUKAN</span> keterbatasan"
+                        </p>
+                        <p class="text-lg sm:text-xl text-[#4A4A6A] dark:text-[#B8B8D0] mt-3">
+                            — itu hanya <span class="italic text-[#3F3D9C] dark:text-[#C8A951] font-medium">cara berbeda</span> dalam melihat dunia.
+                        </p>
+
+                        <div class="w-20 h-0.5 bg-gradient-to-r from-[#3F3D9C] to-[#C8A951] mx-auto my-6 rounded-full"></div>
+
+                        <!-- Call to Action -->
+                        <p class="text-base sm:text-lg text-[#4A4A6A] dark:text-[#B8B8D0] mb-8 max-w-2xl mx-auto">
+                            Mari bersama menciptakan dunia <br> yang lebih <strong class="text-[#1A1A1A] dark:text-[#EAEAEA]">inklusif</strong> dan <strong class="text-[#1A1A1A] dark:text-[#EAEAEA]">aksesibel</strong> untuk semua!
+                        </p>
+
+                        <!-- Buttons dengan Hover Effect Keren -->
+                        <div class="flex flex-wrap items-center justify-center gap-4">
+                            <a href="./pages/kamus-huruf.html" class="group relative px-8 py-3.5 bg-gradient-to-r from-[#3F3D9C] to-[#33318A] dark:from-[#C8A951] dark:to-[#B89A40] text-white rounded-full text-sm font-semibold transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-lg hover:shadow-[#3F3D9C]/30 dark:hover:shadow-[#C8A951]/30 overflow-hidden">
+                                <span class="relative z-10 flex items-center gap-2">
+                                    <svg class="icon w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2Z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7Z"/></svg>
+                                    Mulai Belajar
+                                </span>
+                                <span class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
+                            </a>
+
+                            <a href="./pages/penerjemah.html" class="group relative px-8 py-3.5 border-2 border-[#3F3D9C] dark:border-[#C8A951] text-[#3F3D9C] dark:text-[#C8A951] hover:text-white dark:hover:text-[#0F172A] rounded-full text-sm font-semibold transition-all duration-300 hover:bg-[#3F3D9C] dark:hover:bg-[#C8A951] hover:shadow-xl hover:scale-105 overflow-hidden">
+                                <span class="relative z-10 flex items-center gap-2">
+                                    <svg class="icon w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5Z"/></svg>
+                                    Coba Penerjemah
+                                </span>
+                                <span class="absolute inset-0 bg-[#3F3D9C] dark:bg-[#C8A951] translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
+                            </a>
+                        </div>
+
+                        <!-- Small Tagline -->
+                        <div class="mt-6 flex flex-wrap items-center justify-center gap-4 text-xs text-[#8A8AA8] dark:text-[#8A7F72]">
+                            <span class="flex items-center gap-1.5">
+                                <svg class="icon w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M12 2v4M12 22v-4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg>
+                                <span>Gratis Selamanya</span>
+                            </span>
+                            <span class="w-px h-3 bg-[#8A8AA8]/30"></span>
+                            <span class="flex items-center gap-1.5">
+                                <svg class="icon w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 12.5V7a2 2 0 0 0-4 0v4.5"/><path d="M14 11V5a2 2 0 0 0-4 0v6.5"/><path d="M10 11.5V7a2 2 0 0 0-4 0v8"/><path d="M6 15v-1.5a2 2 0 0 0-4 0v2.5a8.5 8.5 0 0 0 8.5 8.5H12a7.5 7.5 0 0 0 7.5-7.5V12a2 2 0 0 0-4 0"/></svg>
+                                <span>Bahasa Isyarat</span>
+                            </span>
+                            <span class="w-px h-3 bg-[#8A8AA8]/30"></span>
+                            <span class="flex items-center gap-1.5">
+                                <svg class="icon w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+                                <span>Speech-to-Text</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <div class="max-w-7xl mx-auto px-4 py-16">
+            <div class="grid md:grid-cols-4 gap-12">
+                <div>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <img src="assets/images/logov1.png" alt="SabdaLekha" class="logo-footer logo-light" />
+                        <img src="assets/images/logov2.png" alt="SabdaLekha" class="logo-footer logo-dark" />
+                    </div>
+                    <p class="text-sm text-[#8A8AA8] dark:text-[#8A7F72] leading-relaxed">SabdaLekha <br> Menangkap suara, menulis cerita.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-[#1A1A1A] dark:text-[#EAEAEA] mb-4">Menu</h4>
+                    <ul class="space-y-2 text-sm text-[#8A8AA8] dark:text-[#8A7F72]">
+                        <li><a href="index.html" class="hover:text-[#3F3D9C] dark:hover:text-[#C8A951] transition">Beranda</a></li>
+                        <li><a href="pages/kamus-huruf.html" class="hover:text-[#3F3D9C] dark:hover:text-[#C8A951] transition">Kamus Huruf</a></li>
+                        <li><a href="pages/penerjemah.html" class="hover:text-[#3F3D9C] dark:hover:text-[#C8A951] transition">Penerjemah</a></li>
+                        <li><a href="pages/speech-to-text.html" class="hover:text-[#3F3D9C] dark:hover:text-[#C8A951] transition">Speech-to-Text</a></li>
+                        <li><a href="pages/chat.html" class="hover:text-[#3F3D9C] dark:hover:text-[#C8A951] transition">Obrolan Real-time</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-[#1A1A1A] dark:text-[#EAEAEA] mb-4">Kontak</h4>
+                    <ul class="space-y-2 text-sm text-[#8A8AA8] dark:text-[#8A7F72]">
+                        <li class="flex items-center gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 6 9.5 7L22 6"/></svg> <a href="mailto:brielladev@proton.me" class="hover:text-[#3F3D9C] dark:hover:text-[#C8A951] transition">brielladev@proton.me</a></li>
+                        <li class="flex items-center gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg> <a href="tel:+6281234567890" class="hover:text-[#3F3D9C] dark:hover:text-[#C8A951] transition">+62 812-3456-7890</a></li>
+                        <li class="flex items-center gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> Indonesia</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-[#1A1A1A] dark:text-[#EAEAEA] mb-4">Dukung Kami</h4>
+                    <p class="text-sm text-[#8A8AA8] dark:text-[#8A7F72] mb-4">Bantu kami mengembangkan lebih banyak konten edukasi.</p>
+                    <a href="pages/penerjemah.html" class="px-6 py-2 bg-[#3F3D9C] hover:bg-[#33318A] dark:bg-[#C8A951] dark:hover:bg-[#B89A40] text-white rounded-full text-sm transition inline-block shadow-lg hover:shadow-xl">Coba Sekarang</a>
+                </div>
+            </div>
+            <div class="mt-12 pt-8 border-t border-[#3F3D9C]/10 dark:border-[#C8A951]/10 text-center text-sm text-[#8A8AA8] dark:text-[#8A7F72]">
+                <p>©<span id="tahun-footer">2026</span> SabdaLekha. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/navbar.js"></script>
 
     <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const loadEl = document.querySelector('#load');
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-        // // The Firebase SDK is initialized and available here!
-        //
-        // firebase.auth().onAuthStateChanged(user => { });
-        // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
-        // firebase.firestore().doc('/foo/bar').get().then(() => { });
-        // firebase.functions().httpsCallable('yourFunction')().then(() => { });
-        // firebase.messaging().requestPermission().then(() => { });
-        // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
-        // firebase.analytics(); // call to activate
-        // firebase.analytics().logEvent('tutorial_completed');
-        // firebase.performance(); // call to activate
-        //
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+    (function() {
+        const COUNTDOWN_DAYS = 30;
+        const STORAGE_KEY = 'sabdaChatCountdown';
 
-        try {
-          let app = firebase.app();
-          let features = [
-            'auth', 
-            'database', 
-            'firestore',
-            'functions',
-            'messaging', 
-            'storage', 
-            'analytics', 
-            'remoteConfig',
-            'performance',
-          ].filter(feature => typeof app[feature] === 'function');
-          loadEl.textContent = `Firebase SDK loaded with ${features.join(', ')}`;
-        } catch (e) {
-          console.error(e);
-          loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
+        function getTargetDate() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (stored) {
+                const parsed = new Date(JSON.parse(stored));
+                if (!isNaN(parsed.getTime())) {
+                    return parsed;
+                }
+            }
+            const now = new Date();
+            const target = new Date(now);
+            target.setHours(0, 0, 0, 0);
+            target.setDate(target.getDate() + COUNTDOWN_DAYS);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(target.toISOString()));
+            return target;
         }
-      });
+
+        function updateCountdown() {
+            const target = getTargetDate();
+            const now = new Date();
+            const diff = target.getTime() - now.getTime();
+
+            const badges = document.querySelectorAll('#countdownBadge, .countdown-badge');
+
+            if (diff <= 0) {
+                badges.forEach(badge => {
+                    badge.textContent = 'Selesai';
+                    badge.classList.add('ended');
+                });
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            let displayText = '';
+            if (days > 0) {
+                displayText = `${days}h ${hours}j`;
+            } else if (hours > 0) {
+                displayText = `${hours}j ${minutes}m`;
+            } else if (minutes > 0) {
+                displayText = `${minutes}m ${seconds}d`;
+            } else {
+                displayText = `${seconds}d`;
+            }
+
+            badges.forEach(badge => {
+                badge.textContent = displayText;
+                badge.classList.remove('ended');
+            });
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
+        window.addEventListener('focus', function() {
+            const target = getTargetDate();
+            const now = new Date();
+            if (now.getTime() > target.getTime()) {
+                localStorage.removeItem(STORAGE_KEY);
+                getTargetDate();
+                updateCountdown();
+            }
+        });
+    })();
     </script>
-  </body>
+</body>
 </html>
