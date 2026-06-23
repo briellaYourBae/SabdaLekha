@@ -12,7 +12,7 @@ jargon SabdaLekha - Menangkap suara, menulis cerita.
             .logo-mobile { height: 110px; }
             .logo-footer { height: 38px; }
 
-            <!-- ===== TENTANG ===== -->
+    <!-- ===== TENTANG ===== -->
     <section id="tentang" class="py-24 px-4 max-w-7xl mx-auto relative">
         <div class="fade-in-section">
             <div class="text-center mb-16">
