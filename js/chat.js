@@ -1,4 +1,9 @@
 // ==========================================
+// CHAT.JS - FRONTEND CHAT
+// AUTO DELETE PESAN > 6 JAM + TIMER REAL-TIME
+// ==========================================
+
+// ==========================================
 // KONFIGURASI FIREBASE
 // ==========================================
 const firebaseConfig = {
@@ -20,6 +25,13 @@ let currentRoomCode = '';
 let messageListenerRef = null;
 let messagesRef = null;
 let autoClearInterval = null;
+let timerInterval = null;
+
+// ==========================================
+// KONFIGURASI AUTO DELETE
+// ==========================================
+const MAX_MESSAGE_AGE = 6 * 60 * 60 * 1000; // 6 JAM
+const CHECK_INTERVAL = 2 * 60 * 1000; // Cek setiap 2 menit
 
 // ==========================================
 // USERNAME
@@ -48,27 +60,104 @@ function setUsername(name) {
 }
 
 // ==========================================
-// AUTO CLEAR - HAPUS PESAN > 1 MENIT (TESTING)
+// FORMAT AGE
 // ==========================================
-const MAX_MESSAGE_AGE = 1 * 60 * 1000; // 🔥 1 MENIT (untuk testing)
-const CHECK_INTERVAL = 5 * 1000; // Cek setiap 5 detik
+function formatAge(seconds) {
+    if (seconds < 0) return '0d yang lalu';
+    
+    if (seconds < 60) {
+        return `${seconds}d yang lalu`;
+    }
+    
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    
+    if (minutes < 60) {
+        return `${minutes}m ${remainingSeconds}d yang lalu`;
+    }
+    
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+    
+    if (hours < 24) {
+        return `${hours}j ${remainingMinutes}m yang lalu`;
+    }
+    
+    const days = Math.floor(hours / 24);
+    const remainingHours = hours % 24;
+    return `${days}h ${remainingHours}j yang lalu`;
+}
 
+// ==========================================
+// TIMER REAL-TIME - UPDATE SETIAP DETIK
+// ==========================================
+function startTimerRealtime() {
+    if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+    }
+    
+    // Update timer setiap 1 detik
+    timerInterval = setInterval(() => {
+        updateMessageTimers();
+    }, 1000);
+}
+
+function stopTimerRealtime() {
+    if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+    }
+}
+
+function updateMessageTimers() {
+    const container = document.getElementById('messages-container');
+    if (!container) return;
+    
+    const now = Date.now();
+    const cutoff = now - MAX_MESSAGE_AGE;
+    
+    // Cari semua elemen pesan yang punya atribut data-timestamp
+    const messageElements = container.querySelectorAll('[data-timestamp]');
+    
+    messageElements.forEach(el => {
+        const timestamp = parseInt(el.getAttribute('data-timestamp'));
+        if (isNaN(timestamp)) return;
+        
+        // Cek apakah pesan sudah expired
+        if (timestamp < cutoff) {
+            // Hapus elemen dari DOM jika sudah expired
+            el.style.display = 'none';
+            return;
+        }
+        
+        const ageInSeconds = Math.floor((now - timestamp) / 1000);
+        const ageText = formatAge(ageInSeconds);
+        
+        const timerSpan = el.querySelector('.timer-age');
+        if (timerSpan) {
+            timerSpan.textContent = `⏱️ ${ageText}`;
+        }
+    });
+}
+
+// ==========================================
+// AUTO CLEAR - HAPUS PESAN > 6 JAM
+// ==========================================
 function startAutoClear() {
     if (autoClearInterval) {
         clearInterval(autoClearInterval);
         autoClearInterval = null;
     }
 
-    // Jalankan pengecekan setiap 5 detik
     autoClearInterval = setInterval(() => {
         clearOldMessages();
     }, CHECK_INTERVAL);
 
-    // Jalankan pertama kali setelah 2 detik
-    setTimeout(clearOldMessages, 2000);
+    setTimeout(clearOldMessages, 5000);
 
-    console.log('🔄 AUTO-CLEAR TESTING: pesan > 1 menit akan dihapus otomatis');
-    console.log(`⏱️  Cek setiap ${CHECK_INTERVAL / 1000} detik`);
+    console.log('🔄 AUTO-CLEAR: pesan > 6 jam akan dihapus otomatis');
+    console.log(`⏱️  Cek setiap ${CHECK_INTERVAL / 1000 / 60} menit`);
 }
 
 function stopAutoClear() {
@@ -84,7 +173,6 @@ function clearOldMessages() {
     const now = Date.now();
     const cutoff = now - MAX_MESSAGE_AGE;
 
-    // Ambil semua pesan
     ref.once('value', (snapshot) => {
         const data = snapshot.val();
         if (!data) return;
@@ -92,7 +180,6 @@ function clearOldMessages() {
         const toRemove = [];
         let count = 0;
 
-        // Cari pesan yang sudah > 1 menit
         Object.keys(data).forEach(key => {
             const msg = data[key];
             if (msg.timestamp && msg.timestamp < cutoff) {
@@ -101,26 +188,20 @@ function clearOldMessages() {
             }
         });
 
-        if (toRemove.length === 0) {
-            // Tidak ada pesan yang perlu dihapus
-            return;
-        }
+        if (toRemove.length === 0) return;
 
-        console.log(`🧹 Menghapus ${count} pesan lama (umur > 1 menit)...`);
+        console.log(`🧹 Menghapus ${count} pesan lama (umur > 6 jam)...`);
 
-        // Hapus pesan satu per satu
         toRemove.forEach(key => {
             ref.child(key).remove().catch(err => {
                 console.error(`❌ Gagal hapus pesan ${key}:`, err);
             });
         });
 
-        // Tampilkan notifikasi jika banyak pesan terhapus
-        if (count > 0 && typeof notifyInfo === 'function') {
-            notifyInfo(`🧹 ${count} pesan lama otomatis dihapus (testing 1 menit)`, 2000);
+        if (count > 3 && typeof notifyInfo === 'function') {
+            notifyInfo(`🧹 ${count} pesan lama otomatis dihapus (umur > 6 jam)`, 3000);
         }
 
-        // Update UI jika pesan dihapus
         const container = document.getElementById('messages-container');
         if (container && container.children.length <= count) {
             container.innerHTML = "Belum ada pesan";
@@ -147,15 +228,11 @@ function renderMessages(snapshot) {
     const now = Date.now();
     const cutoff = now - MAX_MESSAGE_AGE;
 
-    // Filter: hanya pesan yang masih berlaku (belum > 1 menit)
     const messages = Object.values(data)
         .filter(msg => {
-            // Cek umur pesan
             if (msg.timestamp && msg.timestamp < cutoff) {
-                return false; // Pesan sudah kedaluwarsa
+                return false;
             }
-            
-            // Cek mode (public atau room)
             if (currentMode === 'public') {
                 return msg.type === 'public';
             }
@@ -168,14 +245,12 @@ function renderMessages(snapshot) {
         return;
     }
 
-    // Render pesan dengan bubble style
     container.innerHTML = messages.map(msg => {
         const isOwn = msg.username === currentUsername;
         const bubbleClass = isOwn 
             ? 'message-bubble message-own ml-auto' 
             : 'message-bubble message-other';
         
-        // Format waktu
         const time = new Date(msg.timestamp);
         const timeStr = time.toLocaleTimeString('id-ID', {
             hour: '2-digit',
@@ -185,27 +260,26 @@ function renderMessages(snapshot) {
 
         // Hitung umur pesan dalam detik
         const ageInSeconds = Math.floor((now - msg.timestamp) / 1000);
-        const ageText = ageInSeconds < 60 
-            ? `${ageInSeconds}d yang lalu` 
-            : `${Math.floor(ageInSeconds / 60)}m ${ageInSeconds % 60}d yang lalu`;
+        const ageText = formatAge(ageInSeconds);
 
         return `
-            <div class="${bubbleClass}" style="max-width:80%;margin-bottom:8px;">
+            <div class="${bubbleClass}" style="max-width:80%;margin-bottom:8px;" data-timestamp="${msg.timestamp}">
                 <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;font-size:0.7rem;color:${isOwn ? 'rgba(255,255,255,0.6)' : '#8A8AA8'};">
-                    <strong>${msg.username}</strong>
+                    <strong>${escapeHtml(msg.username)}</strong>
                     <span style="opacity:0.6;">${timeStr}</span>
-                    <span style="opacity:0.4;font-size:0.6rem;">⏱️ ${ageText}</span>
+                    <span class="timer-age" style="opacity:0.4;font-size:0.6rem;">⏱️ ${ageText}</span>
                 </div>
                 <div>${escapeHtml(msg.message)}</div>
             </div>
         `;
     }).join('');
 
-    // Scroll ke bawah
     container.scrollTop = container.scrollHeight;
 }
 
-// Helper untuk escape HTML
+// ==========================================
+// HELPERS
+// ==========================================
 function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
@@ -261,7 +335,6 @@ function joinRoom(code) {
     currentMode = 'room';
     currentRoomCode = code.toUpperCase();
     
-    // Update UI
     const roomInfo = document.getElementById('room-info');
     const roomCodeDisplay = document.getElementById('current-room-code');
     if (roomInfo) roomInfo.classList.remove('hidden');
@@ -274,7 +347,6 @@ function setPublicMode() {
     currentMode = 'public';
     currentRoomCode = '';
     
-    // Sembunyikan info room
     const roomInfo = document.getElementById('room-info');
     if (roomInfo) roomInfo.classList.add('hidden');
     
@@ -292,7 +364,6 @@ function copyRoomCode() {
             notifySuccess('📋 Kode room disalin!', 2000);
         }
     }).catch(() => {
-        // Fallback
         const input = document.createElement('input');
         input.value = currentRoomCode;
         document.body.appendChild(input);
@@ -318,13 +389,11 @@ function leaveRoom() {
 document.addEventListener('DOMContentLoaded', function() {
     currentUsername = getUsername();
 
-    // Tampilkan username
     const usernameDisplay = document.getElementById('current-username');
     if (usernameDisplay) {
         usernameDisplay.textContent = currentUsername;
     }
 
-    // Event listeners
     document.getElementById('sendMessageBtn')?.addEventListener('click', sendMessage);
     document.getElementById('messageInput')?.addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
@@ -332,7 +401,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Mode buttons
     document.getElementById('btnPublic')?.addEventListener('click', setPublicMode);
     document.getElementById('btnCreateRoom')?.addEventListener('click', createRoom);
     document.getElementById('btnJoinRoom')?.addEventListener('click', function() {
@@ -347,18 +415,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Room code input - auto join with Enter
     document.getElementById('roomCodeInput')?.addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
             document.getElementById('btnJoinRoom')?.click();
         }
     });
 
-    // Copy room code
     document.getElementById('copyRoomCode')?.addEventListener('click', copyRoomCode);
     document.getElementById('leaveRoom')?.addEventListener('click', leaveRoom);
 
-    // Refresh username
     document.getElementById('refreshUsername')?.addEventListener('click', function() {
         const newName = generateUsername();
         setUsername(newName);
@@ -373,10 +438,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Start auto-clear
     startAutoClear();
 
+    // Start timer real-time
+    startTimerRealtime();
+
     // Start listening
     setPublicMode();
 
-    console.log('✅ Chat siap! (TESTING MODE: 1 menit)');
+    console.log('✅ Chat siap!');
     console.log(`👤 Username: ${currentUsername}`);
-    console.log(`⏱️  Pesan otomatis dihapus setelah 1 menit (TESTING)`);
+    console.log(`⏱️  Pesan otomatis dihapus setelah 6 jam`);
+    console.log(`⏱️  Timer umur pesan update real-time setiap detik`);
 });
