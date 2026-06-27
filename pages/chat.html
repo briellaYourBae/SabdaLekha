@@ -124,7 +124,7 @@
             transform: translateY(0);
         }
 
-        /* Reply Preview di Chat Bubble */
+        /* ===== REPLY PREVIEW ===== */
         .reply-preview {
             background: rgba(63, 61, 156, 0.08);
             border-left: 3px solid #3F3D9C;
@@ -154,35 +154,58 @@
             color: rgba(255, 255, 255, 0.9);
         }
 
-        /* Reply Button */
+        /* ===== REPLY BUTTON - SELALU TERLIHAT ===== */
         .reply-btn {
-            opacity: 0;
-            transition: opacity 0.2s ease;
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: #8A8AA8;
-            font-size: 0.7rem;
-            padding: 2px 8px;
-            border-radius: 12px;
+            background: rgba(63, 61, 156, 0.08) !important;
+            border: 1px solid rgba(63, 61, 156, 0.12) !important;
+            border-radius: 20px !important;
+            padding: 4px 14px !important;
+            font-size: 0.7rem !important;
+            color: #3F3D9C !important;
+            cursor: pointer !important;
+            transition: all 0.2s ease !important;
+            opacity: 0.8 !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 4px !important;
         }
-        .message-bubble:hover .reply-btn {
-            opacity: 1;
+
+        .dark .reply-btn {
+            background: rgba(200, 169, 81, 0.12) !important;
+            border-color: rgba(200, 169, 81, 0.2) !important;
+            color: #C8A951 !important;
         }
-        .reply-btn:hover {
-            background: rgba(63, 61, 156, 0.1);
-            color: #3F3D9C;
+
+        .reply-btn:hover,
+        .reply-btn:active {
+            transform: scale(1.05) !important;
+            background: rgba(63, 61, 156, 0.15) !important;
+            opacity: 1 !important;
         }
-        .dark .reply-btn:hover {
-            background: rgba(200, 169, 81, 0.1);
-            color: #C8A951;
+
+        .dark .reply-btn:hover,
+        .dark .reply-btn:active {
+            background: rgba(200, 169, 81, 0.2) !important;
         }
+
         .message-own .reply-btn {
-            color: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.12) !important;
+            border-color: rgba(255, 255, 255, 0.2) !important;
+            color: rgba(255, 255, 255, 0.8) !important;
         }
-        .message-own .reply-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.9);
+
+        .message-own .reply-btn:hover,
+        .message-own .reply-btn:active {
+            background: rgba(255, 255, 255, 0.2) !important;
+        }
+
+        /* Mobile friendly - touch target lebih besar */
+        @media (max-width: 640px) {
+            .reply-btn {
+                padding: 6px 16px !important;
+                font-size: 0.75rem !important;
+                min-height: 36px !important;
+            }
         }
 
         /* Modal Reply */
@@ -448,7 +471,7 @@
                     🎤 Klik ikon mikrofon untuk mengubah suara menjadi teks
                 </span>
                 <span class="inline-flex items-center gap-1 mt-1 text-[#3F3D9C] dark:text-[#C8A951] ml-4">
-                    💬 Hover pesan lalu klik "Balas" untuk reply
+                    💬 Klik "Balas" untuk membalas pesan
                 </span>
             </div>
         </div>
