@@ -123,6 +123,72 @@
             opacity: 1;
             transform: translateY(0);
         }
+
+        /* Reply Preview di Chat Bubble */
+        .reply-preview {
+            background: rgba(63, 61, 156, 0.08);
+            border-left: 3px solid #3F3D9C;
+            padding: 6px 10px;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            font-size: 0.8rem;
+            color: #8A8AA8;
+        }
+        .dark .reply-preview {
+            background: rgba(200, 169, 81, 0.08);
+            border-left-color: #C8A951;
+        }
+        .message-own .reply-preview {
+            background: rgba(255, 255, 255, 0.15);
+            border-left-color: rgba(255, 255, 255, 0.3);
+            color: rgba(255, 255, 255, 0.7);
+        }
+        .reply-preview .reply-username {
+            font-weight: 600;
+            color: #3F3D9C;
+        }
+        .dark .reply-preview .reply-username {
+            color: #C8A951;
+        }
+        .message-own .reply-preview .reply-username {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Reply Button */
+        .reply-btn {
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #8A8AA8;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+        .message-bubble:hover .reply-btn {
+            opacity: 1;
+        }
+        .reply-btn:hover {
+            background: rgba(63, 61, 156, 0.1);
+            color: #3F3D9C;
+        }
+        .dark .reply-btn:hover {
+            background: rgba(200, 169, 81, 0.1);
+            color: #C8A951;
+        }
+        .message-own .reply-btn {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        .message-own .reply-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Modal Reply */
+        #replyModal {
+            z-index: 99999;
+        }
     </style>
 </head>
 
@@ -130,7 +196,7 @@
 
     <div id="particles-container" class="fixed inset-0 pointer-events-none z-0 overflow-hidden"></div>
 
- <!-- ===== NAVBAR ===== -->
+    <!-- ===== NAVBAR ===== -->
     <nav id="navbar">
         <div class="navbar-inner">
             <a href="../index.html" class="navbar-logo group">
@@ -221,7 +287,6 @@
                 </button>
             </div>
 
-            
             <div class="mobile-menu-body">
                 <a href="../index.html" class="mobile-menu-link">
                     <span class="link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V9.5"/></svg></span>
@@ -240,12 +305,12 @@
                     <span class="link-text">Kamus Huruf</span>
                     <span class="link-badge">A-Z</span>
                 </a>
-                <a href="penerjemah.html" class="mobile-menu-link">
+                <a href="penerjemah.html" class="mobile-menu-link" style="color:#3F3D9C;">
                     <span class="link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5Z"/></svg></span>
                     <span class="link-text">Penerjemah</span>
                     <span class="link-badge">Teks → Isyarat</span>
                 </a>
-                <a href="speech-to-text.html" class="mobile-menu-link" style="color:#3F3D9C;">
+                <a href="speech-to-text.html" class="mobile-menu-link">
                     <span class="link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></span>
                     <span class="link-text">Speech-to-Text</span>
                     <span class="link-badge">Suara → Teks</span>
@@ -382,9 +447,45 @@
                 <span class="inline-flex items-center gap-1 mt-1 text-yellow-600 dark:text-yellow-400">
                     🎤 Klik ikon mikrofon untuk mengubah suara menjadi teks
                 </span>
+                <span class="inline-flex items-center gap-1 mt-1 text-[#3F3D9C] dark:text-[#C8A951] ml-4">
+                    💬 Hover pesan lalu klik "Balas" untuk reply
+                </span>
             </div>
         </div>
     </main>
+
+    <!-- ===== REPLY MODAL ===== -->
+    <div id="replyModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-[99999]">
+        <div class="bg-white dark:bg-[#1A1A2E] rounded-3xl p-6 max-w-md w-full mx-4 shadow-2xl">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-bold text-[#1A1A1A] dark:text-[#EAEAEA]">💬 Reply</h3>
+                <button id="closeReplyModal" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Pesan yang di-reply -->
+            <div id="replyPreview" class="bg-[#3F3D9C]/5 dark:bg-[#C8A951]/5 rounded-xl p-3 mb-4 border-l-4 border-[#3F3D9C] dark:border-[#C8A951]">
+                <div class="text-xs text-[#8A8AA8] dark:text-[#8A7F72] mb-1">Membalas:</div>
+                <div id="replyMessagePreview" class="text-sm text-[#1A1A1A] dark:text-[#EAEAEA]"></div>
+                <div id="replyUsernamePreview" class="text-xs text-[#8A8AA8] dark:text-[#8A7F72] mt-1"></div>
+            </div>
+            
+            <!-- Input reply -->
+            <div class="flex gap-3">
+                <input type="text" id="replyInput" placeholder="Ketik balasan..." class="flex-1 px-4 py-3 bg-white/50 dark:bg-[#1A1A2E]/50 border border-[#3F3D9C]/20 dark:border-[#C8A951]/20 rounded-xl text-sm focus:outline-none focus:border-[#3F3D9C] dark:focus:border-[#C8A951] transition" />
+                <button id="sendReplyBtn" class="px-6 py-3 bg-[#3F3D9C] hover:bg-[#33318A] dark:bg-[#C8A951] dark:hover:bg-[#B89A40] text-white rounded-xl transition shadow-lg hover:shadow-xl flex items-center gap-2">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="22" y1="2" x2="11" y2="13"/>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                    </svg>
+                    Kirim
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- ===== FOOTER ===== -->
     <footer>
@@ -447,7 +548,6 @@
                     return parsed;
                 }
             }
-            // Mulai dari sekarang (jam 12 malam)
             const now = new Date();
             const target = new Date(now);
             target.setHours(0, 0, 0, 0);
@@ -493,11 +593,9 @@
             });
         }
 
-        // Update setiap detik
         updateCountdown();
         setInterval(updateCountdown, 1000);
 
-        // Perbarui target jika halaman dimuat ulang setelah lewat tengah malam
         window.addEventListener('focus', function() {
             const target = getTargetDate();
             const now = new Date();

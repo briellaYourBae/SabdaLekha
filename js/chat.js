@@ -1,6 +1,6 @@
 // ==========================================
 // CHAT.JS - FRONTEND CHAT
-// AUTO DELETE PESAN > 6 JAM + TIMER REAL-TIME
+// AUTO DELETE PESAN > 6 JAM + TIMER REAL-TIME + REPLY
 // ==========================================
 
 // ==========================================
@@ -26,6 +26,7 @@ let messageListenerRef = null;
 let messagesRef = null;
 let autoClearInterval = null;
 let timerInterval = null;
+let replyTarget = null;
 
 // ==========================================
 // KONFIGURASI AUTO DELETE
@@ -97,7 +98,6 @@ function startTimerRealtime() {
         timerInterval = null;
     }
     
-    // Update timer setiap 1 detik
     timerInterval = setInterval(() => {
         updateMessageTimers();
     }, 1000);
@@ -117,16 +117,13 @@ function updateMessageTimers() {
     const now = Date.now();
     const cutoff = now - MAX_MESSAGE_AGE;
     
-    // Cari semua elemen pesan yang punya atribut data-timestamp
     const messageElements = container.querySelectorAll('[data-timestamp]');
     
     messageElements.forEach(el => {
         const timestamp = parseInt(el.getAttribute('data-timestamp'));
         if (isNaN(timestamp)) return;
         
-        // Cek apakah pesan sudah expired
         if (timestamp < cutoff) {
-            // Hapus elemen dari DOM jika sudah expired
             el.style.display = 'none';
             return;
         }
@@ -213,6 +210,70 @@ function clearOldMessages() {
 }
 
 // ==========================================
+// REPLY SYSTEM
+// ==========================================
+function openReplyModal(messageData) {
+    replyTarget = messageData;
+    
+    const previewMsg = document.getElementById('replyMessagePreview');
+    const previewUser = document.getElementById('replyUsernamePreview');
+    
+    if (previewMsg) {
+        previewMsg.textContent = messageData.message || '(pesan tidak tersedia)';
+    }
+    if (previewUser) {
+        previewUser.textContent = `— ${messageData.username}`;
+    }
+    
+    const modal = document.getElementById('replyModal');
+    if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+    
+    const input = document.getElementById('replyInput');
+    if (input) {
+        setTimeout(() => input.focus(), 100);
+    }
+}
+
+function closeReplyModal() {
+    const modal = document.getElementById('replyModal');
+    if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+    replyTarget = null;
+    const input = document.getElementById('replyInput');
+    if (input) {
+        input.value = '';
+    }
+}
+
+function sendReply() {
+    const input = document.getElementById('replyInput');
+    const text = input.value.trim();
+    if (!text || !replyTarget) return;
+    
+    const message = {
+        type: currentMode,
+        room: currentRoomCode,
+        username: currentUsername,
+        message: text,
+        timestamp: Date.now(),
+        replyTo: {
+            username: replyTarget.username,
+            message: replyTarget.message,
+            timestamp: replyTarget.timestamp
+        }
+    };
+    
+    database.ref('messages').push(message);
+    input.value = '';
+    closeReplyModal();
+}
+
+// ==========================================
 // RENDER
 // ==========================================
 function renderMessages(snapshot) {
@@ -245,7 +306,7 @@ function renderMessages(snapshot) {
         return;
     }
 
-    container.innerHTML = messages.map(msg => {
+    container.innerHTML = messages.map((msg) => {
         const isOwn = msg.username === currentUsername;
         const bubbleClass = isOwn 
             ? 'message-bubble message-own ml-auto' 
@@ -258,18 +319,44 @@ function renderMessages(snapshot) {
             second: '2-digit'
         });
 
-        // Hitung umur pesan dalam detik
         const ageInSeconds = Math.floor((now - msg.timestamp) / 1000);
         const ageText = formatAge(ageInSeconds);
+
+        // Build reply preview if exists
+        let replyHtml = '';
+        if (msg.replyTo) {
+            replyHtml = `
+                <div class="reply-preview">
+                    <span class="reply-username">${escapeHtml(msg.replyTo.username)}</span>
+                    <span style="opacity:0.6;">: ${escapeHtml(msg.replyTo.message)}</span>
+                </div>
+            `;
+        }
+
+        // Escape message data for safe attribute
+        const safeMessage = escapeHtml(msg.message);
+        const safeUsername = escapeHtml(msg.username);
+        const safeReplyUsername = msg.replyTo ? escapeHtml(msg.replyTo.username) : '';
+        const safeReplyMessage = msg.replyTo ? escapeHtml(msg.replyTo.message) : '';
 
         return `
             <div class="${bubbleClass}" style="max-width:80%;margin-bottom:8px;" data-timestamp="${msg.timestamp}">
                 <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;font-size:0.7rem;color:${isOwn ? 'rgba(255,255,255,0.6)' : '#8A8AA8'};">
-                    <strong>${escapeHtml(msg.username)}</strong>
+                    <strong>${safeUsername}</strong>
                     <span style="opacity:0.6;">${timeStr}</span>
                     <span class="timer-age" style="opacity:0.4;font-size:0.6rem;">⏱️ ${ageText}</span>
                 </div>
-                <div>${escapeHtml(msg.message)}</div>
+                ${replyHtml}
+                <div>${safeMessage}</div>
+                <div style="display:flex;justify-content:flex-end;margin-top:4px;">
+                    <button class="reply-btn" onclick="openReplyModal({
+                        username: '${safeUsername.replace(/'/g, "\\'")}',
+                        message: '${safeMessage.replace(/'/g, "\\'")}',
+                        timestamp: ${msg.timestamp}
+                    })">
+                        💬 Balas
+                    </button>
+                </div>
             </div>
         `;
     }).join('');
@@ -281,6 +368,7 @@ function renderMessages(snapshot) {
 // HELPERS
 // ==========================================
 function escapeHtml(text) {
+    if (!text) return '';
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
@@ -394,6 +482,7 @@ document.addEventListener('DOMContentLoaded', function() {
         usernameDisplay.textContent = currentUsername;
     }
 
+    // Send message
     document.getElementById('sendMessageBtn')?.addEventListener('click', sendMessage);
     document.getElementById('messageInput')?.addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
@@ -401,6 +490,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Mode buttons
     document.getElementById('btnPublic')?.addEventListener('click', setPublicMode);
     document.getElementById('btnCreateRoom')?.addEventListener('click', createRoom);
     document.getElementById('btnJoinRoom')?.addEventListener('click', function() {
@@ -421,9 +511,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Room controls
     document.getElementById('copyRoomCode')?.addEventListener('click', copyRoomCode);
     document.getElementById('leaveRoom')?.addEventListener('click', leaveRoom);
 
+    // Refresh username
     document.getElementById('refreshUsername')?.addEventListener('click', function() {
         const newName = generateUsername();
         setUsername(newName);
@@ -435,17 +527,30 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Start auto-clear
+    // Reply modal
+    document.getElementById('closeReplyModal')?.addEventListener('click', closeReplyModal);
+    document.getElementById('sendReplyBtn')?.addEventListener('click', sendReply);
+    document.getElementById('replyInput')?.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            sendReply();
+        }
+    });
+    
+    // Close modal on overlay click
+    document.getElementById('replyModal')?.addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeReplyModal();
+        }
+    });
+
+    // Start services
     startAutoClear();
-
-    // Start timer real-time
     startTimerRealtime();
-
-    // Start listening
     setPublicMode();
 
     console.log('✅ Chat siap!');
     console.log(`👤 Username: ${currentUsername}`);
     console.log(`⏱️  Pesan otomatis dihapus setelah 6 jam`);
     console.log(`⏱️  Timer umur pesan update real-time setiap detik`);
+    console.log(`💬  Fitur Reply aktif! Hover pesan lalu klik "Balas"`);
 });
